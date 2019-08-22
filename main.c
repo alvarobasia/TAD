@@ -231,6 +231,10 @@ void lerProduto(){
     }
 
 }
+
+lerVendas(){
+    
+}
 void registrador(){
     int tipoDeAcao;
     printf("VOCÊ DESEJA: \n");
