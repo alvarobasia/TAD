@@ -96,6 +96,28 @@ void imprimeInfoCliente(TModulo modulo, int indice){
         }
         printf("---------------------------------------\n");
 }
+
+void imprimeProduto(TModulo modulo, int indice){
+    puts("------INFORMAÇÕES DO PRODUTO---------");
+    printf("Codigo do produto: ");
+    printf("%d", modulo.listaDeProdutos[indice].codigoDoProd);
+    printf("Nome do produto: ");
+    printf("%s", modulo.listaDeProdutos[indice].nomeDoProd);
+    printf("Descrição do produto: ");
+    printf(" ' %s '", modulo.listaDeProdutos[indice].descricaoDoProd);
+    printf("Data de fabricação: ");
+    printf("%d / %d/ %d", modulo.listaDeProdutos[indice].dataFabri.dia,
+    modulo.listaDeProdutos[indice].dataFabri.mes,
+    modulo.listaDeProdutos[indice].dataFabri.ano);
+    printf("Lote do produto: ");
+    printf("%s", modulo.listaDeProdutos[indice].loteDoProd);
+    printf("Preço do produto: ");
+    printf("R$ %f", modulo.listaDeProdutos[indice].precoUnit);
+    printf("Quantidade de produtos no estoque: ");
+    printf("%d", modulo.listaDeProdutos[indice].quantidadeProd);
+    printf("--------------------------------------------------\n");
+}
+
 void lerCliente(){
     TModulo modulo;
     int indice = 0;
