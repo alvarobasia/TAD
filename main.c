@@ -3,7 +3,6 @@
 #include <string.h>
 #include <locale.h>
 #define TAM 50
-
 typedef struct Data
 {
     int dia;
@@ -45,13 +44,12 @@ typedef struct Cliente
 typedef struct Vendas
 {
     int codigo;
-    char ID;
+    char ID[TAM];
     int quantidadeDeVendas;
     TData dataDaVenda;
-    int tipoDePagamanto; //a vista ou a prazo
+    int tipoDePagamento; //a vista ou a prazo
     float totalDaVenda;
-    char dataRealizacaoCompra[TAM];
-    char prazoParaPagamento[TAM];
+    TData prazoParaPagamento;
     TCliente debitosParaVenda;
 } TVendas;
 
@@ -123,10 +121,10 @@ void imprimeInfoProduto(TModulo modulo, int indice){
     printf("--------------------------------------------------\n");
 }
 
-void lerCliente(){
+void lerCliente(TModulo modulo){
+    TModulo temp = modulo;
     int resposta = 1;
     int indice = 0;
-    TModulo modulo;
     while(1){
         printf("-------------------------------------------\n");
         printf("--------***REGISTRAR CLIENTE***-------------\n");
@@ -188,39 +186,39 @@ void lerCliente(){
             break;
 
     }
+    //registrador();
 }
 
-void lerProduto(){
-    TModulo modulo;
+void lerProduto(TModulo *modulo){
     int indice = 0;
     int resposta = 1;
     while (1){
         printf("-------------------------------------------\n");
         printf("--------***REGISTRAR PRODUTO***-------------\n");
         printf("Digite o codigo do produto");
-        scanf("%d", &modulo.listaDeProdutos[indice].codigoDoProd);
+        scanf("%d", &modulo->listaDeProdutos[indice].codigoDoProd);
         limpezaDoBuffer();
         printf("Digite o nome do produto: ");
-        fgets(modulo.listaDeProdutos[indice].nomeDoProd, 49, stdin);
+        fgets(modulo->listaDeProdutos[indice].nomeDoProd, 49, stdin);
         limpezaDoBuffer();
         printf("Digite a descrição do produto: ");
-        fgets(modulo.listaDeProdutos[indice].descricaoDoProd, 49, stdin);
+        fgets(modulo->listaDeProdutos[indice].descricaoDoProd, 49, stdin);
         printf("Digite a data de fabricação do produto\n");
         printf("DIA: ");
-        scanf("%d", &modulo.listaDeProdutos[indice].dataFabri.dia);
+        scanf("%d", &modulo->listaDeProdutos[indice].dataFabri.dia);
         printf("MÊS: ");
-        scanf("%d", &modulo.listaDeProdutos[indice].dataFabri.mes);
+        scanf("%d", &modulo->listaDeProdutos[indice].dataFabri.mes);
         printf("ANO: ");
-        scanf("%d", &modulo.listaDeProdutos[indice].dataFabri.ano);
+        scanf("%d", &modulo->listaDeProdutos[indice].dataFabri.ano);
         printf("Digite o lote do produto: ");
         limpezaDoBuffer();
-        fgets(modulo.listaDeProdutos[indice].loteDoProd, 49, stdin);
+        fgets(modulo->listaDeProdutos[indice].loteDoProd, 49, stdin);
         printf("Digite o preço do produto: ");
-        scanf("%f", &modulo.listaDeProdutos[indice].precoUnit);
+        scanf("%f", &modulo->listaDeProdutos[indice].precoUnit);
         printf("Digite a quantidade de produtos que o estoque possui: ");
-        scanf("%d", &modulo.listaDeProdutos[indice].quantidadeProd);
+        scanf("%d", &modulo->listaDeProdutos[indice].quantidadeProd);
         limparConsole();
-        imprimeInfoProduto(modulo, indice);
+        imprimeInfoProduto(*modulo, indice);
         printf("Você deseja registrar um novo produto? 1 - sim 2 - não");
         scanf("%d", &resposta);
         limpezaDoBuffer();
@@ -229,32 +227,121 @@ void lerProduto(){
         else
             break;
     }
-
+    //registrador(modulo);
 }
 
-lerVendas(){
+TProdutos buscarProduto (int codigo, TModulo *modulo){
+    int i = 0;
+    for (i = 0; i < 80; i++){
+       if(codigo == modulo->listaDeProdutos[i].codigoDoProd){
+           return modulo->listaDeProdutos[i];
+           break;
+       }else{
+           printf("Este produto não existe");
+       }
+}
+    }
     
+
+
+TCliente buscarCliente (char ID[], TModulo modulo){
+    int indice;
+    int resultado = -1;
+    TCliente cliente;
+    for (int i = 0; i < 50; i++)
+    {
+        strncmp(ID, modulo.listaDeClientes[i].ID, 3);
+        if(resultado == 0){
+            cliente = modulo.listaDeClientes[i];
+            return cliente;
+        }
+    }
+    printf("Este cliente não existe");
 }
-void registrador(){
+
+int lerVendas(TModulo * modulo){
+    int indice;
+    int codigo;
+    char ID[TAM];
+    int resposta = 1;
+    while(1){
+        printf("-------------------------------------------\n");
+        printf("--------***EFETUAR VENDA***-------------\n");
+        TCliente cliente;
+        TProdutos produto;
+        //printf("Digite o CPF/CNPJ do cliente");
+        //fgets(ID, 49, stdin);
+        //limpezaDoBuffer();
+        //cliente = buscarCliente( ID , modulo);
+        //if (cliente.debitoRegistrado == 1)
+        //    break;
+        printf("Digite o código do produto: ");
+        limpezaDoBuffer();
+        scanf("%d", &codigo);
+        produto = buscarProduto(codigo, modulo);
+        modulo->vendasRealizadas[indice].codigo = produto.codigoDoProd;
+        strcpy(cliente.ID, modulo->vendasRealizadas[indice].ID );
+        printf("DIA: ");
+        scanf("%d", &modulo->vendasRealizadas[indice].dataDaVenda.dia);
+        printf("MÊS: ");
+        scanf("%d", &modulo->vendasRealizadas[indice].dataDaVenda.mes);
+        printf("ANO: ");
+        scanf("%d", &modulo->vendasRealizadas[indice].dataDaVenda.ano);
+        printf("Digite o tipo de pagamento: 1 - vista 2- prazo");
+        scanf("%d", &modulo->vendasRealizadas[indice].tipoDePagamento);
+        if(modulo->vendasRealizadas[indice].tipoDePagamento == 2){
+            printf("----------Á PRAZO-------------\n");
+            printf("Digite o prazo da compra da compra: ");
+            printf("DIA: ");
+            scanf("%d", &modulo->vendasRealizadas[indice].prazoParaPagamento.dia);
+            printf("MÊS: ");
+            scanf("%d", &modulo->vendasRealizadas[indice].prazoParaPagamento.mes);
+            printf("ANO: ");
+            scanf("%d", &modulo->vendasRealizadas[indice].prazoParaPagamento.mes);  
+        }
+        if(modulo->vendasRealizadas[indice].tipoDePagamento == 1)
+           printf("----------Á VISTA-------------\n"); 
+        printf("Deseja realizar outra compra? 1 - sim , 2 - não");
+        scanf("%d", &resposta);
+        if(resposta == 1)
+            indice++;
+        if(resposta == 2)
+            break;
+    }
+      
+}
+
+void registrador(TModulo* modulo){
     int tipoDeAcao;
     printf("VOCÊ DESEJA: \n");
     printf("****************************\n");
     printf("Digite:");
     printf("|1| -- REGISTRAR CLIENTE --\n");
     printf("|2| -- REGISTRAR PRODUTO --\n");
+    printf("|3| -- EFETUAR UMA VENDA --\n");
     scanf("%d", &tipoDeAcao);
     limpezaDoBuffer();
     if(tipoDeAcao == 1) 
-        lerCliente();
+        lerCliente(*modulo);
     if(tipoDeAcao == 2)
-        lerProduto();
+        lerProduto(modulo);
+    if(tipoDeAcao == 3)
+        lerVendas(modulo);
+    registrador(modulo);
+}
+
+TModulo* instanciar(){
+    TModulo* modulo;
+    modulo = (TModulo*)malloc(sizeof(TModulo));
+    return modulo;
 }
 int main()
 {
+    TModulo* modulo = instanciar();
     setlocale(LC_ALL, "portuguese");
     printf("Criado por Álvaro Basílio , 2019 ");
     printf("©Todos os direitos reservados\n");
     printf("VOCÊ NÃO DEVE USAR UMA CÓPIA PIRATA DESSE SOFTWARE\n");
-    registrador();
+    registrador(modulo);
     return 0;
 }
