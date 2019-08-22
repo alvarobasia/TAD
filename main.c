@@ -61,6 +61,10 @@ typedef struct modulo{
     TVendas vendasRealizadas[90];
 }TModulo;
 
+void limpezaDoBuffer(){
+    __fpurge(stdin);
+    fflush(stdin); 
+}
 void imprimeInfoCliente(TModulo modulo, int indice){
     puts("------INFORMAÇÕES DO CLIENTE---------");
     printf("1- NOME- %s\n", modulo.listaDeClientes[indice].nome);
@@ -99,9 +103,6 @@ void lerCliente(){
     while(1){
         printf("-------------------------------------------\n");
         printf("--------***REGISTRAR CLIENTE***-------------\n");
-        printf("Criado por Álvaro Basílio , 2019 ");
-        printf("©Todos os direitos reservados\n");
-        printf("VOCÊ NÃO DEVE USAR UMA CÓPIA PIRATA DESSE SOFTWARE\n");
         printf("Digite o nome do cliente: ");
         fgets(modulo.listaDeClientes[indice].nome,49, stdin);
         printf("Digite a data de nascimento/Criação\n");
@@ -110,25 +111,20 @@ void lerCliente(){
         printf("MÊS: ");
         scanf("%d", &modulo.listaDeClientes[indice].dataDeNascimento.mes);
         printf("ANO: ");
-        __fpurge(stdin);
-        fflush(stdin);
+        limpezaDoBuffer();
         scanf("%d", &modulo.listaDeClientes[indice].dataDeNascimento.ano);
         printf("Digite o endereço do cliente: ");
         printf("CIDADE: ");
-        __fpurge(stdin);
-        fflush(stdin);
+        limpezaDoBuffer();
         fgets(modulo.listaDeClientes[indice].enderecoCompleto.cidade,49,stdin);
         printf("BAIRRO: ");
-        __fpurge(stdin);
-        fflush(stdin);
+        limpezaDoBuffer();
         fgets(modulo.listaDeClientes[indice].enderecoCompleto.bairro,49,stdin);
         printf("RUA: ");
-        __fpurge(stdin);
-        fflush(stdin);
+        limpezaDoBuffer();
         fgets(modulo.listaDeClientes[indice].enderecoCompleto.rua, 49,stdin);
         printf("CEP: ");
-        __fpurge(stdin);
-        fflush(stdin);
+        limpezaDoBuffer();
         fgets(modulo.listaDeClientes[indice].enderecoCompleto.cep, 49 , stdin);
         printf("NÚMERO: ");
         scanf("%d", &modulo.listaDeClientes[indice].enderecoCompleto.numero);
@@ -141,26 +137,22 @@ void lerCliente(){
         if(modulo.listaDeClientes[indice].tipoCliente == 0){
             printf("VOCÊ SELECIONOU PESSOA FISICA!!\n");
             printf("Digite o RG do cliente: ");
-            __fpurge(stdin);
-            fflush(stdin);
+            limpezaDoBuffer();
             fgets(modulo.listaDeClientes[indice].identidade, 49, stdin);
             printf("Digite o CPF do clitente");
-            __fpurge(stdin);
-            fflush(stdin);
+            limpezaDoBuffer();
             fgets(modulo.listaDeClientes[indice].ID, 49 , stdin);
         }
         if(modulo.listaDeClientes[indice].tipoCliente == 1){
             printf("VOCÊ SELECIONOU PESSOA JURIDICA!!\n");
             printf("Digite o CNPJ do clitente");
-            __fpurge(stdin);
-            fflush(stdin);
+            limpezaDoBuffer();
             fgets(modulo.listaDeClientes[indice].ID, 49, stdin);
         }
         imprimeInfoCliente(modulo, indice);
         printf("DESEJA REGISTRAR UM NOVO CLIENTE? 1-sim 2 - não ");
         scanf("%d", &resposta);
-        __fpurge(stdin);
-        fflush(stdin);
+        limpezaDoBuffer();
         if(resposta == 1)
             indice++;
         else
@@ -176,13 +168,12 @@ void lerProduto(){
     while (1){
         printf("-------------------------------------------\n");
         printf("--------***REGISTRAR PRODUTO***-------------\n");
-        printf("Criado por Álvaro Basílio , 2019 ");
-        printf("©Todos os direitos reservados\n");
-        printf("VOCÊ NÃO DEVE USAR UMA CÓPIA PIRATA DESSE SOFTWARE\n");
         printf("Digite o codigo do produto");
         scanf("%d", &modulo.listaDeProdutos[indice].codigoDoProd);
+        limpezaDoBuffer();
         printf("Digite o nome do produto: ");
         fgets(modulo.listaDeProdutos[indice].nomeDoProd, 49, stdin);
+        limpezaDoBuffer();
         printf("Digite a descrição do produto: ");
         fgets(modulo.listaDeProdutos[indice].descricaoDoProd, 49, stdin);
         printf("Digite a data de fabricação do produto\n");
@@ -193,13 +184,15 @@ void lerProduto(){
         printf("ANO: ");
         scanf("%d", &modulo.listaDeProdutos[indice].dataFabri.ano);
         printf("Digite o lote do produto: ");
-        fgets(modulo.listaDeProdutos[indice].loteDoProd);
+        limpezaDoBuffer();
+        fgets(modulo.listaDeProdutos[indice].loteDoProd, 49, stdin);
         printf("Digite o preço do produto: ");
         scanf("%f", &modulo.listaDeProdutos[indice].precoUnit);
         printf("Digite a quantidade de produtos que o estoque possui: ");
         scanf("%d", &modulo.listaDeProdutos[indice].quantidadeProd);
         printf("Você deseja registrar um novo produto? 1 - sim 2 - não");
         scanf("%d", &resposta);
+        limpezaDoBuffer();
         if (resposta == 1)
             indice++;
         else
@@ -210,7 +203,20 @@ void lerProduto(){
 
 int main()
 {
+    int tipoDeAcao;
     setlocale(LC_ALL, "portuguese");
-    lerCliente();
+    printf("Criado por Álvaro Basílio , 2019 ");
+    printf("©Todos os direitos reservados\n");
+    printf("VOCÊ NÃO DEVE USAR UMA CÓPIA PIRATA DESSE SOFTWARE\n");
+    printf("VOCÊ DESEJA: \n");
+    printf("****************************\n");
+    printf("Digite:");
+    printf("|1| -- REGISTRAR CLIENTE --\n");
+    printf("|2| -- REGISTRAR PRODUTO --\n");
+    scanf("%d", &tipoDeAcao);
+    if(tipoDeAcao == 1)
+        lerCliente();
+    if(tipoDeAcao == 2)
+        lerProduto();
     return 0;
 }
