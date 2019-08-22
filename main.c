@@ -254,4 +254,4 @@ int main()
     registrador();
     return 0;
 }
-//Observação: esta versão está incompleta para correção de bugs!!!
+//Observação: esta versão está incompleta para correção de bugs!!!!
