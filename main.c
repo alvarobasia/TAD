@@ -169,9 +169,47 @@ void lerCliente(){
     }
 }
 
+void lerProduto(){
+    TModulo modulo;
+    int indice = 0;
+    int resposta = 1;
+    while (1){
+        printf("-------------------------------------------\n");
+        printf("--------***REGISTRAR PRODUTO***-------------\n");
+        printf("Criado por Álvaro Basílio , 2019 ");
+        printf("©Todos os direitos reservados\n");
+        printf("VOCÊ NÃO DEVE USAR UMA CÓPIA PIRATA DESSE SOFTWARE\n");
+        printf("Digite o codigo do produto");
+        scanf("%d", &modulo.listaDeProdutos[indice].codigoDoProd);
+        printf("Digite o nome do produto: ");
+        fgets(modulo.listaDeProdutos[indice].nomeDoProd, 49, stdin);
+        printf("Digite a descrição do produto: ");
+        fgets(modulo.listaDeProdutos[indice].descricaoDoProd, 49, stdin);
+        printf("Digite a data de fabricação do produto\n");
+        printf("DIA: ");
+        scanf("%d", &modulo.listaDeProdutos[indice].dataFabri.dia);
+        printf("MÊS: ");
+        scanf("%d", &modulo.listaDeProdutos[indice].dataFabri.mes);
+        printf("ANO: ");
+        scanf("%d", &modulo.listaDeProdutos[indice].dataFabri.ano);
+        printf("Digite o lote do produto: ");
+        fgets(modulo.listaDeProdutos[indice].loteDoProd);
+        printf("Digite o preço do produto: ");
+        scanf("%f", &modulo.listaDeProdutos[indice].precoUnit);
+        printf("Digite a quantidade de produtos que o estoque possui: ");
+        scanf("%d", &modulo.listaDeProdutos[indice].quantidadeProd);
+        printf("Você deseja registrar um novo produto? 1 - sim 2 - não");
+        scanf("%d", &resposta);
+        if (resposta == 1)
+            indice++;
+        else
+            break;
+    }
+
+}
+
 int main()
 {
-    printf("mmo");
     setlocale(LC_ALL, "portuguese");
     lerCliente();
     return 0;
