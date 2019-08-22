@@ -65,6 +65,11 @@ void limpezaDoBuffer(){
     __fpurge(stdin);
     fflush(stdin); 
 }
+
+void limparConsole(){
+    system("clear");
+    system("cls");
+}
 void imprimeInfoCliente(TModulo modulo, int indice){
     puts("------INFORMAÇÕES DO CLIENTE---------");
     printf("1- NOME- %s\n", modulo.listaDeClientes[indice].nome);
@@ -97,31 +102,31 @@ void imprimeInfoCliente(TModulo modulo, int indice){
         printf("---------------------------------------\n");
 }
 
-void imprimeProduto(TModulo modulo, int indice){
+void imprimeInfoProduto(TModulo modulo, int indice){
     puts("------INFORMAÇÕES DO PRODUTO---------");
     printf("Codigo do produto: ");
-    printf("%d", modulo.listaDeProdutos[indice].codigoDoProd);
+    printf("%d\n", modulo.listaDeProdutos[indice].codigoDoProd);
     printf("Nome do produto: ");
-    printf("%s", modulo.listaDeProdutos[indice].nomeDoProd);
+    printf("%s\n", modulo.listaDeProdutos[indice].nomeDoProd);
     printf("Descrição do produto: ");
-    printf(" ' %s '", modulo.listaDeProdutos[indice].descricaoDoProd);
+    printf(" ' %s '\n", modulo.listaDeProdutos[indice].descricaoDoProd);
     printf("Data de fabricação: ");
-    printf("%d / %d/ %d", modulo.listaDeProdutos[indice].dataFabri.dia,
+    printf("%d / %d/ %d\n", modulo.listaDeProdutos[indice].dataFabri.dia,
     modulo.listaDeProdutos[indice].dataFabri.mes,
     modulo.listaDeProdutos[indice].dataFabri.ano);
     printf("Lote do produto: ");
-    printf("%s", modulo.listaDeProdutos[indice].loteDoProd);
+    printf("%s\n", modulo.listaDeProdutos[indice].loteDoProd);
     printf("Preço do produto: ");
-    printf("R$ %f", modulo.listaDeProdutos[indice].precoUnit);
+    printf("R$ %f\n", modulo.listaDeProdutos[indice].precoUnit);
     printf("Quantidade de produtos no estoque: ");
-    printf("%d", modulo.listaDeProdutos[indice].quantidadeProd);
+    printf("%d\n", modulo.listaDeProdutos[indice].quantidadeProd);
     printf("--------------------------------------------------\n");
 }
 
 void lerCliente(){
-    TModulo modulo;
-    int indice = 0;
     int resposta = 1;
+    int indice = 0;
+    TModulo modulo;
     while(1){
         printf("-------------------------------------------\n");
         printf("--------***REGISTRAR CLIENTE***-------------\n");
@@ -171,7 +176,9 @@ void lerCliente(){
             limpezaDoBuffer();
             fgets(modulo.listaDeClientes[indice].ID, 49, stdin);
         }
+        limparConsole();
         imprimeInfoCliente(modulo, indice);
+        limpezaDoBuffer();
         printf("DESEJA REGISTRAR UM NOVO CLIENTE? 1-sim 2 - não ");
         scanf("%d", &resposta);
         limpezaDoBuffer();
@@ -212,6 +219,8 @@ void lerProduto(){
         scanf("%f", &modulo.listaDeProdutos[indice].precoUnit);
         printf("Digite a quantidade de produtos que o estoque possui: ");
         scanf("%d", &modulo.listaDeProdutos[indice].quantidadeProd);
+        limparConsole();
+        imprimeInfoProduto(modulo, indice);
         printf("Você deseja registrar um novo produto? 1 - sim 2 - não");
         scanf("%d", &resposta);
         limpezaDoBuffer();
@@ -222,23 +231,26 @@ void lerProduto(){
     }
 
 }
-
-int main()
-{
+void registrador(){
     int tipoDeAcao;
-    setlocale(LC_ALL, "portuguese");
-    printf("Criado por Álvaro Basílio , 2019 ");
-    printf("©Todos os direitos reservados\n");
-    printf("VOCÊ NÃO DEVE USAR UMA CÓPIA PIRATA DESSE SOFTWARE\n");
     printf("VOCÊ DESEJA: \n");
     printf("****************************\n");
     printf("Digite:");
     printf("|1| -- REGISTRAR CLIENTE --\n");
     printf("|2| -- REGISTRAR PRODUTO --\n");
     scanf("%d", &tipoDeAcao);
-    if(tipoDeAcao == 1)
+    limpezaDoBuffer();
+    if(tipoDeAcao == 1) 
         lerCliente();
     if(tipoDeAcao == 2)
         lerProduto();
+}
+int main()
+{
+    setlocale(LC_ALL, "portuguese");
+    printf("Criado por Álvaro Basílio , 2019 ");
+    printf("©Todos os direitos reservados\n");
+    printf("VOCÊ NÃO DEVE USAR UMA CÓPIA PIRATA DESSE SOFTWARE\n");
+    registrador();
     return 0;
 }
