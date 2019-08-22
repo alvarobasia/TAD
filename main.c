@@ -93,7 +93,6 @@ void imprimeInfoCliente(TModulo modulo, int indice){
         printf("---------------------------------------\n");
 }
 void lerCliente(){
-    printf("iokok");
     TModulo modulo;
     int indice = 0;
     int resposta = 1;
