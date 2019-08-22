@@ -120,9 +120,8 @@ void imprimeInfoProduto(TModulo modulo, int indice){
     printf("%d\n", modulo.listaDeProdutos[indice].quantidadeProd);
     printf("--------------------------------------------------\n");
 }
-
-void lerCliente(TModulo modulo){
-    TModulo temp = modulo;
+/*
+void lerCliente(TModulo *modulo){
     int resposta = 1;
     int indice = 0;
     while(1){
@@ -188,7 +187,7 @@ void lerCliente(TModulo modulo){
     }
     //registrador();
 }
-
+*/
 void lerProduto(TModulo *modulo){
     int indice = 0;
     int resposta = 1;
@@ -259,7 +258,7 @@ TCliente buscarCliente (char ID[], TModulo modulo){
     printf("Este cliente não existe");
 }
 
-int lerVendas(TModulo * modulo){
+int lerVendas(TModulo *modulo){
     int indice;
     int codigo;
     char ID[TAM];
@@ -311,7 +310,7 @@ int lerVendas(TModulo * modulo){
       
 }
 
-void registrador(TModulo* modulo){
+void registrador(TModulo modulo){
     int tipoDeAcao;
     printf("VOCÊ DESEJA: \n");
     printf("****************************\n");
@@ -321,23 +320,22 @@ void registrador(TModulo* modulo){
     printf("|3| -- EFETUAR UMA VENDA --\n");
     scanf("%d", &tipoDeAcao);
     limpezaDoBuffer();
-    if(tipoDeAcao == 1) 
-        lerCliente(*modulo);
-    if(tipoDeAcao == 2)
-        lerProduto(modulo);
+    //if(tipoDeAcao == 1) 
+        //lerCliente(&modulo);
+    if(tipoDeAcao == 1)
+        lerProduto(&modulo);
     if(tipoDeAcao == 3)
-        lerVendas(modulo);
+        lerVendas(&modulo);
     registrador(modulo);
 }
 
-TModulo* instanciar(){
-    TModulo* modulo;
-    modulo = (TModulo*)malloc(sizeof(TModulo));
+TModulo instanciar(){
+    TModulo modulo;
     return modulo;
 }
 int main()
 {
-    TModulo* modulo = instanciar();
+    TModulo modulo = instanciar();
     setlocale(LC_ALL, "portuguese");
     printf("Criado por Álvaro Basílio , 2019 ");
     printf("©Todos os direitos reservados\n");
