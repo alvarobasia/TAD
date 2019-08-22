@@ -61,6 +61,37 @@ typedef struct modulo{
     TVendas vendasRealizadas[90];
 }TModulo;
 
+void imprimeInfoCliente(int indice){
+    puts("------INFORMAÇÕES DO CLIENTE---------");
+    printf("1- NOME- %s\n", modulo.listaDeClientes[indice].nome);
+    printf("2- Nasc/Criação - %d / %d / %d\n",modulo.listaDeClientes[indice].dataDeNascimento.dia,
+    modulo.listaDeClientes[indice].dataDeNascimento.mes,modulo.listaDeClientes[indice].dataDeNascimento.ano);
+    printf("3- -Endereço-\n");
+    printf("3-a) Cidade: %s\n",modulo.listaDeClientes[indice].enderecoCompleto.cidade);
+    printf("3-b) Bairro: %s\n",modulo.listaDeClientes[indice].enderecoCompleto.bairro);
+    printf("3-c) Rua: %s\n",modulo.listaDeClientes[indice].enderecoCompleto.rua);
+    printf("3-d) CEP: %s\n",modulo.listaDeClientes[indice].enderecoCompleto.cep);
+    printf("3-e) Número: %d\n",modulo.listaDeClientes[indice].enderecoCompleto.numero);
+    printf("4- Débido registrado? ");
+    if(modulo.listaDeClientes[indice].debitoRegistrado == 0)
+        printf("NÃO\n");
+    if(modulo.listaDeClientes[indice].debitoRegistrado == 1)
+        printf("SIM\n");
+        printf("5- Tipo de cliente ");
+    if(modulo.listaDeClientes[indice].tipoCliente == 0){
+        printf("Pessoa Física\n");
+        printf("6- RG: ");
+        printf("%s\n", modulo.listaDeClientes[indice].identidade);
+        printf("7- CPF: ");
+        printf("%s\n", modulo.listaDeClientes[indice].ID);
+        }
+    if(modulo.listaDeClientes[indice].tipoCliente == 1){
+        printf("Pessoa Jurídica\n");
+        printf("6- CNPJ: ");
+        printf("%s\n", modulo.listaDeClientes[indice].ID);
+        }
+        printf("---------------------------------------\n");
+}
 void lerCliente(){
     printf("iokok");
     TModulo modulo;
@@ -126,35 +157,36 @@ void lerCliente(){
             fflush(stdin);
             fgets(modulo.listaDeClientes[indice].ID, 49, stdin);
         }
-        puts("------INFORMAÇÕES DO CLIENTE---------");
-        printf("1- NOME- %s\n", modulo.listaDeClientes[indice].nome);
-        printf("2- Nasc/Criação - %d / %d / %d\n",modulo.listaDeClientes[indice].dataDeNascimento.dia,
-        modulo.listaDeClientes[indice].dataDeNascimento.mes,modulo.listaDeClientes[indice].dataDeNascimento.ano);
-        printf("3- -Endereço-\n");
-        printf("3-a) Cidade: %s\n",modulo.listaDeClientes[indice].enderecoCompleto.cidade);
-        printf("3-b) Bairro: %s\n",modulo.listaDeClientes[indice].enderecoCompleto.bairro);
-        printf("3-c) Rua: %s\n",modulo.listaDeClientes[indice].enderecoCompleto.rua);
-        printf("3-d) CEP: %s\n",modulo.listaDeClientes[indice].enderecoCompleto.cep);
-        printf("3-e) Número: %d\n",modulo.listaDeClientes[indice].enderecoCompleto.numero);
-        printf("4- Débido registrado? ");
-        if(modulo.listaDeClientes[indice].debitoRegistrado == 0)
-            printf("NÃO\n");
-        if(modulo.listaDeClientes[indice].debitoRegistrado == 1)
-            printf("SIM\n");
-        printf("5- Tipo de cliente ");
-        if(modulo.listaDeClientes[indice].tipoCliente == 0){
-            printf("Pessoa Física\n");
-            printf("6- RG: ");
-            printf("%s\n", modulo.listaDeClientes[indice].identidade);
-            printf("7- CPF: ");
-            printf("%s\n", modulo.listaDeClientes[indice].ID);
-        }
-        if(modulo.listaDeClientes[indice].tipoCliente == 1){
-            printf("Pessoa Jurídica\n");
-            printf("6- CNPJ: ");
-            printf("%s\n", modulo.listaDeClientes[indice].ID);
-        }
-        printf("---------------------------------------\n");
+        // puts("------INFORMAÇÕES DO CLIENTE---------");
+        // printf("1- NOME- %s\n", modulo.listaDeClientes[indice].nome);
+        // printf("2- Nasc/Criação - %d / %d / %d\n",modulo.listaDeClientes[indice].dataDeNascimento.dia,
+        // modulo.listaDeClientes[indice].dataDeNascimento.mes,modulo.listaDeClientes[indice].dataDeNascimento.ano);
+        // printf("3- -Endereço-\n");
+        // printf("3-a) Cidade: %s\n",modulo.listaDeClientes[indice].enderecoCompleto.cidade);
+        // printf("3-b) Bairro: %s\n",modulo.listaDeClientes[indice].enderecoCompleto.bairro);
+        // printf("3-c) Rua: %s\n",modulo.listaDeClientes[indice].enderecoCompleto.rua);
+        // printf("3-d) CEP: %s\n",modulo.listaDeClientes[indice].enderecoCompleto.cep);
+        // printf("3-e) Número: %d\n",modulo.listaDeClientes[indice].enderecoCompleto.numero);
+        // printf("4- Débido registrado? ");
+        // if(modulo.listaDeClientes[indice].debitoRegistrado == 0)
+        //     printf("NÃO\n");
+        // if(modulo.listaDeClientes[indice].debitoRegistrado == 1)
+        //     printf("SIM\n");
+        //     printf("5- Tipo de cliente ");
+        // if(modulo.listaDeClientes[indice].tipoCliente == 0){
+        //     printf("Pessoa Física\n");
+        //     printf("6- RG: ");
+        //     printf("%s\n", modulo.listaDeClientes[indice].identidade);
+        //     printf("7- CPF: ");
+        //     printf("%s\n", modulo.listaDeClientes[indice].ID);
+        //     }
+        // if(modulo.listaDeClientes[indice].tipoCliente == 1){
+        //     printf("Pessoa Jurídica\n");
+        //     printf("6- CNPJ: ");
+        //     printf("%s\n", modulo.listaDeClientes[indice].ID);
+        //     }
+        // printf("---------------------------------------\n");
+        imprimeInfoCliente(indice);
         printf("DESEJA REGISTRAR UM NOVO CLIENTE? 1-sim 2 - não ");
         scanf("%d", &resposta);
         __fpurge(stdin);
