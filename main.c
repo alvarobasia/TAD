@@ -47,7 +47,7 @@ typedef struct Vendas
     char ID[TAM];
     int quantidadeDeVendas;
     TData dataDaVenda;
-    int tipoDePagamento; //a vista ou a prazo
+    int tipoDePagamento; //1 - a vista ou 2 - a prazo
     float totalDaVenda;
     TData prazoParaPagamento;
     TCliente debitosParaVenda;
@@ -120,7 +120,7 @@ void imprimeInfoProduto(TModulo modulo, int indice){
     printf("%d\n", modulo.listaDeProdutos[indice].quantidadeProd);
     printf("--------------------------------------------------\n");
 }
-/*
+
 void lerCliente(TModulo *modulo){
     int resposta = 1;
     int indice = 0;
@@ -128,53 +128,53 @@ void lerCliente(TModulo *modulo){
         printf("-------------------------------------------\n");
         printf("--------***REGISTRAR CLIENTE***-------------\n");
         printf("Digite o nome do cliente: ");
-        fgets(modulo.listaDeClientes[indice].nome,49, stdin);
+        fgets(modulo->listaDeClientes[indice].nome,49, stdin);
         printf("Digite a data de nascimento/Criação\n");
         printf("DIA: ");
-        scanf("%d", &modulo.listaDeClientes[indice].dataDeNascimento.dia);
+        scanf("%d", &modulo->listaDeClientes[indice].dataDeNascimento.dia);
         printf("MÊS: ");
-        scanf("%d", &modulo.listaDeClientes[indice].dataDeNascimento.mes);
+        scanf("%d", &modulo->listaDeClientes[indice].dataDeNascimento.mes);
         printf("ANO: ");
         limpezaDoBuffer();
-        scanf("%d", &modulo.listaDeClientes[indice].dataDeNascimento.ano);
+        scanf("%d", &modulo->listaDeClientes[indice].dataDeNascimento.ano);
         printf("Digite o endereço do cliente: ");
         printf("CIDADE: ");
         limpezaDoBuffer();
-        fgets(modulo.listaDeClientes[indice].enderecoCompleto.cidade,49,stdin);
+        fgets(modulo->listaDeClientes[indice].enderecoCompleto.cidade,49,stdin);
         printf("BAIRRO: ");
         limpezaDoBuffer();
-        fgets(modulo.listaDeClientes[indice].enderecoCompleto.bairro,49,stdin);
+        fgets(modulo->listaDeClientes[indice].enderecoCompleto.bairro,49,stdin);
         printf("RUA: ");
         limpezaDoBuffer();
-        fgets(modulo.listaDeClientes[indice].enderecoCompleto.rua, 49,stdin);
+        fgets(modulo->listaDeClientes[indice].enderecoCompleto.rua, 49,stdin);
         printf("CEP: ");
         limpezaDoBuffer();
-        fgets(modulo.listaDeClientes[indice].enderecoCompleto.cep, 49 , stdin);
+        fgets(modulo->listaDeClientes[indice].enderecoCompleto.cep, 49 , stdin);
         printf("NÚMERO: ");
-        scanf("%d", &modulo.listaDeClientes[indice].enderecoCompleto.numero);
+        scanf("%d", &modulo->listaDeClientes[indice].enderecoCompleto.numero);
         printf("Possui debido registrado? 0-não 1 - sim ");
-        scanf("%hd", &modulo.listaDeClientes[indice].debitoRegistrado);
+        scanf("%hd", &modulo->listaDeClientes[indice].debitoRegistrado);
         printf("-------------------------------------------\n");
         printf("--------Digite o tipo do clinte-------------\n");
         printf("|0|-FISICO                     |1|-JURIDICO  \n");
-        scanf("%hd", &modulo.listaDeClientes[indice].tipoCliente);
-        if(modulo.listaDeClientes[indice].tipoCliente == 0){
+        scanf("%hd", &modulo->listaDeClientes[indice].tipoCliente);
+        if(modulo->listaDeClientes[indice].tipoCliente == 0){
             printf("VOCÊ SELECIONOU PESSOA FISICA!!\n");
             printf("Digite o RG do cliente: ");
             limpezaDoBuffer();
-            fgets(modulo.listaDeClientes[indice].identidade, 49, stdin);
+            fgets(modulo->listaDeClientes[indice].identidade, 49, stdin);
             printf("Digite o CPF do clitente");
             limpezaDoBuffer();
-            fgets(modulo.listaDeClientes[indice].ID, 49 , stdin);
+            fgets(modulo->listaDeClientes[indice].ID, 49 , stdin);
         }
-        if(modulo.listaDeClientes[indice].tipoCliente == 1){
+        if(modulo->listaDeClientes[indice].tipoCliente == 1){
             printf("VOCÊ SELECIONOU PESSOA JURIDICA!!\n");
             printf("Digite o CNPJ do clitente");
             limpezaDoBuffer();
-            fgets(modulo.listaDeClientes[indice].ID, 49, stdin);
+            fgets(modulo->listaDeClientes[indice].ID, 49, stdin);
         }
         limparConsole();
-        imprimeInfoCliente(modulo, indice);
+        imprimeInfoCliente(*modulo, indice);
         limpezaDoBuffer();
         printf("DESEJA REGISTRAR UM NOVO CLIENTE? 1-sim 2 - não ");
         scanf("%d", &resposta);
@@ -185,9 +185,8 @@ void lerCliente(TModulo *modulo){
             break;
 
     }
-    //registrador();
 }
-*/
+
 void lerProduto(TModulo *modulo){
     int indice = 0;
     int resposta = 1;
@@ -226,60 +225,70 @@ void lerProduto(TModulo *modulo){
         else
             break;
     }
-    //registrador(modulo);
 }
 
-TProdutos buscarProduto (int codigo, TModulo *modulo){
-    int i = 0;
-    for (i = 0; i < 80; i++){
+TProdutos* buscarProduto (int codigo, TModulo *modulo, int* indice){
+    for (int i = 0; i < 80; i++){
        if(codigo == modulo->listaDeProdutos[i].codigoDoProd){
-           return modulo->listaDeProdutos[i];
+           *indice = i;
+           return &modulo->listaDeProdutos[i];
            break;
-       }else{
-           printf("Este produto não existe");
-       }
-}
+       }     
     }
+}
     
 
-
-TCliente buscarCliente (char ID[], TModulo modulo){
-    int indice;
-    int resultado = -1;
-    TCliente cliente;
-    for (int i = 0; i < 50; i++)
-    {
-        strncmp(ID, modulo.listaDeClientes[i].ID, 3);
-        if(resultado == 0){
-            cliente = modulo.listaDeClientes[i];
-            return cliente;
-        }
+TCliente* buscarCliente (char ID[], TModulo *modulo, int* indice){
+    for (int i = 0; i < 80; i++){
+       if(strncmp(ID, modulo->listaDeClientes[i].ID, TAM) == 0){
+           *indice = i;
+           return &modulo->listaDeClientes[i];
+           break;
+       }     
     }
-    printf("Este cliente não existe");
+    return NULL;
 }
 
-int lerVendas(TModulo *modulo){
-    int indice;
+
+
+void lerVendas(TModulo *modulo){
+    int indice = 0;
     int codigo;
     char ID[TAM];
     int resposta = 1;
     while(1){
         printf("-------------------------------------------\n");
         printf("--------***EFETUAR VENDA***-------------\n");
-        TCliente cliente;
-        TProdutos produto;
-        //printf("Digite o CPF/CNPJ do cliente");
-        //fgets(ID, 49, stdin);
-        //limpezaDoBuffer();
-        //cliente = buscarCliente( ID , modulo);
-        //if (cliente.debitoRegistrado == 1)
-        //    break;
+        TCliente* cliente;
+        TProdutos* produto;
+        int indiceProduto;
+        int indiceCliente;
+        printf("Digite o CPF/CNPJ do cliente");
+        fgets(ID, 49, stdin);
+        limpezaDoBuffer();
+        cliente = buscarCliente(ID, modulo, &indiceCliente);
+        if(cliente == NULL){
+            printf("Cliente inexistente");
+            break;
+        }
+        if (cliente->debitoRegistrado == 1){
+            printf("Cliente possui debito registrado");
+            break;
+        }
         printf("Digite o código do produto: ");
         limpezaDoBuffer();
         scanf("%d", &codigo);
-        produto = buscarProduto(codigo, modulo);
-        modulo->vendasRealizadas[indice].codigo = produto.codigoDoProd;
-        strcpy(cliente.ID, modulo->vendasRealizadas[indice].ID );
+        produto = buscarProduto(codigo, modulo, &indiceProduto);
+        if(produto == NULL){
+            printf("Produto inexistente\n");
+            break;
+        }
+        if(produto->quantidadeProd == 0){
+            printf("Em falta!");
+            break;
+        }
+        modulo->vendasRealizadas[indice].codigo = produto->codigoDoProd;
+        strcpy(cliente->ID, modulo->vendasRealizadas[indice].ID );
         printf("DIA: ");
         scanf("%d", &modulo->vendasRealizadas[indice].dataDaVenda.dia);
         printf("MÊS: ");
@@ -296,12 +305,18 @@ int lerVendas(TModulo *modulo){
             printf("MÊS: ");
             scanf("%d", &modulo->vendasRealizadas[indice].prazoParaPagamento.mes);
             printf("ANO: ");
-            scanf("%d", &modulo->vendasRealizadas[indice].prazoParaPagamento.mes);  
+            scanf("%d", &modulo->vendasRealizadas[indice].prazoParaPagamento.mes);
+            modulo->vendasRealizadas[indice].tipoDePagamento = 2;
+            cliente->debitoRegistrado = 1;  
         }
-        if(modulo->vendasRealizadas[indice].tipoDePagamento == 1)
+        if(modulo->vendasRealizadas[indice].tipoDePagamento == 1){
            printf("----------Á VISTA-------------\n"); 
+           modulo->vendasRealizadas[indice].tipoDePagamento = 1;
+        }
+        limparConsole();
         printf("Deseja realizar outra compra? 1 - sim , 2 - não");
         scanf("%d", &resposta);
+        limpezaDoBuffer();
         if(resposta == 1)
             indice++;
         if(resposta == 2)
@@ -320,9 +335,9 @@ void registrador(TModulo modulo){
     printf("|3| -- EFETUAR UMA VENDA --\n");
     scanf("%d", &tipoDeAcao);
     limpezaDoBuffer();
-    //if(tipoDeAcao == 1) 
-        //lerCliente(&modulo);
-    if(tipoDeAcao == 1)
+    if(tipoDeAcao == 1) 
+        lerCliente(&modulo);
+    if(tipoDeAcao == 2)
         lerProduto(&modulo);
     if(tipoDeAcao == 3)
         lerVendas(&modulo);
@@ -333,13 +348,17 @@ TModulo instanciar(){
     TModulo modulo;
     return modulo;
 }
+
+void copyRight(){
+    printf("Criado por Álvaro Basílio , 2019 ");
+    printf("©Todos os direitos reservados\n");
+    printf("VOCÊ NÃO DEVE USAR UMA CÓPIA PIRATA DESSE SOFTWARE\n");
+}
 int main()
 {
     TModulo modulo = instanciar();
     setlocale(LC_ALL, "portuguese");
-    printf("Criado por Álvaro Basílio , 2019 ");
-    printf("©Todos os direitos reservados\n");
-    printf("VOCÊ NÃO DEVE USAR UMA CÓPIA PIRATA DESSE SOFTWARE\n");
+    copyRight();
     registrador(modulo);
     return 0;
 }
