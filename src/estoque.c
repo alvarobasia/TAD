@@ -130,22 +130,27 @@ void imprimeInfoProduto(ModuloProdutos modulo, int indice){
 }
 
 void lerCliente(ModuloClientes *ModuloClientes){
+    FILE *arquivoCliente;
     limparConsole();
     int resposta = 1;
     int indice  = 0;
+    arquivoCliente = fopen("clientes.txt", "a");
     while(1){
         printf("-------------------------------------------\n");
         printf("--------***REGISTRAR CLIENTE***-------------\n");
         printf("Digite o nome do cliente: \n");
-        fgets(ModuloClientes->listaDeClientes[indice].nome,49, stdin);
+        fgets(ModuloClientes->listaDeClientes[indice].nome, 49, stdin);
+        fprintf(arquivoCliente, "Nome do cliente : %s\n", ModuloClientes->listaDeClientes[indice].nome );
         printf("Digite a data de nascimento/Criação\n");
         printf("DIA: ");
         scanf("%d", &ModuloClientes->listaDeClientes[indice].dataDeNascimento.dia);
         printf("MÊS: ");
         scanf("%d", &ModuloClientes->listaDeClientes[indice].dataDeNascimento.mes);
         printf("ANO: ");
-        limpezaDoBuffer();
         scanf("%d", &ModuloClientes->listaDeClientes[indice].dataDeNascimento.ano);
+        fprintf(arquivoCliente, "Data de nascimento: %d/ %d/%d \n", ModuloClientes->listaDeClientes[indice].dataDeNascimento.dia,
+        ModuloClientes->listaDeClientes[indice].dataDeNascimento.mes, ModuloClientes->listaDeClientes[indice].dataDeNascimento.ano);
+        limpezaDoBuffer();
         printf("Digite o endereço do cliente: \n");
         printf("CIDADE: ");
         limpezaDoBuffer();
@@ -161,26 +166,40 @@ void lerCliente(ModuloClientes *ModuloClientes){
         fgets(ModuloClientes->listaDeClientes[indice].enderecoCompleto.cep, 49 , stdin);
         printf("NÚMERO: ");
         scanf("%d", &ModuloClientes->listaDeClientes[indice].enderecoCompleto.numero);
+        fprintf(arquivoCliente, "Endereço: Cidade %s Bairro: %s rua: %s CEP: %s numero: %d\n",ModuloClientes->listaDeClientes[indice].enderecoCompleto.cidade,
+         ModuloClientes->listaDeClientes[indice].enderecoCompleto.bairro,ModuloClientes->listaDeClientes[indice].enderecoCompleto.rua,
+         ModuloClientes->listaDeClientes[indice].enderecoCompleto.cep, ModuloClientes->listaDeClientes[indice].enderecoCompleto.numero);
         printf("Possui debido registrado? 0-não 1 - sim \n");
         scanf("%hd", &ModuloClientes->listaDeClientes[indice].debitoRegistrado);
+        if(ModuloClientes->listaDeClientes[indice].debitoRegistrado == 0){
+            fprintf(arquivoCliente, "Não possui debito\n");
+        }else{
+            fprintf(arquivoCliente, "Possui\n");
+        }
+        
         printf("-------------------------------------------\n");
         printf("--------Digite o tipo do clinte-------------\n");
         printf("|0|-FISICO                     |1|-JURIDICO  \n");
         scanf("%hd", &ModuloClientes->listaDeClientes[indice].tipoCliente);
         if(ModuloClientes->listaDeClientes[indice].tipoCliente == 0){
             printf("VOCÊ SELECIONOU PESSOA FISICA!!\n");
+            fprintf(arquivoCliente, "PESSOA FISICA \n");
             printf("Digite o RG do cliente: \n");
             limpezaDoBuffer();
             fgets(ModuloClientes->listaDeClientes[indice].identidade, 49, stdin);
+            fprintf(arquivoCliente, "RG: %s\n",ModuloClientes->listaDeClientes[indice].identidade );
             printf("Digite o CPF do clitente \n");
             limpezaDoBuffer();
             fgets(ModuloClientes->listaDeClientes[indice].ID, 49 , stdin);
+            fprintf(arquivoCliente, "CPF: %s\n", ModuloClientes->listaDeClientes[indice].ID );
         }
         if(ModuloClientes->listaDeClientes[indice].tipoCliente == 1){
             printf("VOCÊ SELECIONOU PESSOA JURIDICA!!\n");
+            fprintf(arquivoCliente, "PESSOA JURIDICA \n");
             printf("Digite o CNPJ do clitente \n");
             limpezaDoBuffer();
             fgets(ModuloClientes->listaDeClientes[indice].ID, 49, stdin);
+            fprintf(arquivoCliente, "CNPJ: %s\n", ModuloClientes->listaDeClientes[indice].ID );
         }
         limparConsole();
         imprimeInfoCliente(*ModuloClientes, indice);
@@ -188,12 +207,14 @@ void lerCliente(ModuloClientes *ModuloClientes){
         printf("DESEJA REGISTRAR UM NOVO CLIENTE? 1-sim 2 - não \n");
         scanf("%d", &resposta);
         limpezaDoBuffer();
-        if(resposta == 1)
+        if(resposta == 1){
+            fprintf(arquivoCliente, "--------------------------\n");
             indice++;
-        else
+        }else{
+            fclose(arquivoCliente);
             ModuloClientes->indice += indice;
             break;
-
+        }
     }
 }
 
