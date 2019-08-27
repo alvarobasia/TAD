@@ -1,6 +1,24 @@
 #include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <locale.h>
 #define TAM 50
-#include "estoque.h"
+
+typedef struct Data
+{
+    int dia;
+    int mes;
+    int ano;
+} TData;
+
+typedef struct _endereco
+{
+    char cidade[TAM];
+    char bairro[TAM];
+    char rua[TAM];
+    char cep[TAM];
+    int numero;
+} TEndereco;
 
 typedef struct Cliente
 {
@@ -10,14 +28,14 @@ typedef struct Cliente
     TData dataDeNascimento;
     TEndereco enderecoCompleto;
     short int tipoCliente; //0 - pessoa Fisica 1 - Pessoa juridica
-    int debitoRegistrado; //0 - n�o tem 1 - tem
+    short int debitoRegistrado; //0 - não tem 1 - tem
 } TCliente;
 
 typedef struct _ModuloClientes{
-  TCliente listaDeClientes[TAM];
-  int indice;
+    TCliente listaDeClientes[80];
+    int indice;
 }ModuloClientes;
 
 void imprimeInfoCliente(ModuloClientes modulo, int indice);
 
-void lerCliente(ModuloClientes *modulo);
+void lerCliente(ModuloClientes *ModuloClientes);
