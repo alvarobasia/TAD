@@ -4,6 +4,8 @@
 #include <locale.h>
 #include "clientes.h"
 
+
+
 void imprimeInfoCliente(ModuloClientes modulo, int indice){
     puts("------INFORMAÇÕES DO CLIENTE---------");
     printf("1- NOME- %s\n", modulo.listaDeClientes[indice].nome);
