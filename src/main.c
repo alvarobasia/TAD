@@ -7,7 +7,7 @@
 #include "vendas.h"
 #define TAM 50
 
-void registrador(ModuloClientes* clientes1, ModuloProdutos* produtos1, ModuloVendas* vendas1){
+/*void registrador(ModuloClientes* clientes1, ModuloProdutos* produtos1, ModuloVendas* vendas1){
     int tipoDeAcao;
     printf("VOCÊ DESEJA: \n");
     printf("****************************\n");
@@ -26,11 +26,7 @@ void registrador(ModuloClientes* clientes1, ModuloProdutos* produtos1, ModuloVen
     registrador(clientes1, produtos1, vendas1 );
 }
 
-void copyRight(){
-    printf("Criado por Álvaro Basílio , 2019 ");
-    printf("©Todos os direitos reservados\n");
-    printf("VOCÊ NÃO DEVE USAR UMA CÓPIA PIRATA DESSE SOFTWARE\n");
-}
+*/
 int main()
 
 {
@@ -38,10 +34,20 @@ int main()
     ModuloProdutos produtos1;
     ModuloVendas vendas1;
     setlocale(LC_ALL, "portuguese");
-    copyRight();
-    clientes1.indice = 0;
-    produtos1.indice = 0;
-    vendas1.indice = 0;
-    registrador(&clientes1, &produtos1, &vendas1);
+    iniciarModuloCliente(&clientes1);
+    iniciarModuloProduto(&produtos1);
+    iniciarModuloVendas(&vendas1);
+    lerCliente(&clientes1);
+    imprimeInfoCliente(clientes1);
+    inserirCliente(&clientes1, clientes1.listaDeClientes[clientes1.indice]);
+    lerProduto(&produtos1);
+    imprimeInfoProduto(produtos1);
+    inserirProduto(&produtos1, produtos1.listaDeProdutos[produtos1.indice]);
+    printf("dsd");
+    limpezaDoBuffer();
+    lerVendas(&vendas1, &clientes1, &produtos1);
+    imprimeVendas(vendas1);
+    inserirVendas(&vendas1, vendas1.vendasRealizadas[vendas1.indice]);
+    //registrador(&clientes1, &produtos1, &vendas1);
     return 0;
 }

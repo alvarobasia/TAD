@@ -23,8 +23,14 @@ typedef struct _ModuloProdutos{
     int indice;
 }ModuloProdutos;
 
-void imprimeInfoProduto(ModuloProdutos modulo, int indice);
+void imprimeInfoProduto(ModuloProdutos modulo);
 
 void lerProduto(ModuloProdutos *ModuloProdutos);
+
+void iniciarModuloProduto(ModuloProdutos *ModuloProdutos);
+
+void inserirProduto(ModuloProdutos *ModuloProdutos, TProdutos Produtos);
+
+int pesquisarProduto(ModuloProdutos ModuloProdutos, TProdutos  Produtos);
 
 #endif

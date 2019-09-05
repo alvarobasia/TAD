@@ -26,13 +26,12 @@ typedef struct _ModuloVendas{
     int indice;
 }ModuloVendas;
 
-void imprimeVendas(ModuloVendas ModuloVendas, ModuloClientes ModuloClientes, ModuloProdutos ModuloProdutos,  
-int indice, int indiceProduto, int indiceCLiente);
+void imprimeVendas(ModuloVendas ModuloVendas);
 
-TProdutos* buscarProduto (int codigo, ModuloProdutos *ModuloProdutos, int* indice);
+void lerVendas(ModuloVendas *ModuloVendas, ModuloClientes *ModuloClientes, ModuloProdutos *ModuloProdutos);
 
-TCliente* buscarCliente (char ID[], ModuloClientes *ModuloClientes, int* indice);
+void iniciarModuloVendas(ModuloVendas *ModuloVendas);
 
-void lerVendas(ModuloVendas *ModuloVendas, ModuloClientes* ModuloClientes, ModuloProdutos* ModuloProdutos);
+void inserirVendas(ModuloVendas *ModuloVendas, TVendas Vendas);
 
 #endif
