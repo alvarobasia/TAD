@@ -12,3 +12,8 @@ void limparConsole(){
     system("clear");
     system("cls");
 }
+
+void formatador(char string[]){
+    int i = strlen(string);
+    string[i-1] = '\0';   
+}

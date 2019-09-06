@@ -26,4 +26,6 @@ void limpezaDoBuffer();
 
 void limparConsole();
 
+void formatador(char string[]);
+
 #endif

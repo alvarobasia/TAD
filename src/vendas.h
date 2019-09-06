@@ -28,7 +28,7 @@ typedef struct _ModuloVendas{
 
 void imprimeVendas(ModuloVendas ModuloVendas);
 
-void lerVendas(ModuloVendas *ModuloVendas, ModuloClientes *ModuloClientes, ModuloProdutos *ModuloProdutos);
+int lerVendas(ModuloVendas *ModuloVendas, ModuloClientes *ModuloClientes, ModuloProdutos *ModuloProdutos);
 
 void iniciarModuloVendas(ModuloVendas *ModuloVendas);
 

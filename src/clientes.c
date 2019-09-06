@@ -41,12 +41,13 @@ void imprimeInfoCliente(ModuloClientes modulo){
 void lerCliente(ModuloClientes *ModuloClientes){
     FILE *arquivoCliente;
     limparConsole();
-    arquivoCliente = fopen("clientes.txt", "a");
+    arquivoCliente = fopen("clientes.json", "a");
     printf("-------------------------------------------\n");
     printf("--------***REGISTRAR CLIENTE***-------------\n");
     printf("Digite o nome do cliente: \n");
     fgets(ModuloClientes->listaDeClientes[ModuloClientes->indice].nome, 49, stdin);
-    fprintf(arquivoCliente, "Nome do cliente : %s\n", ModuloClientes->listaDeClientes[ModuloClientes->indice].nome );
+    formatador(ModuloClientes->listaDeClientes[ModuloClientes->indice].nome);
+    fprintf(arquivoCliente, "{ \n \"Nome do cliente\" : \"%s\",\n", ModuloClientes->listaDeClientes[ModuloClientes->indice].nome );
     printf("Digite a data de nascimento/Criação\n");
     printf("DIA: ");
     scanf("%d", &ModuloClientes->listaDeClientes[ModuloClientes->indice].dataDeNascimento.dia);
@@ -54,33 +55,37 @@ void lerCliente(ModuloClientes *ModuloClientes){
     scanf("%d", &ModuloClientes->listaDeClientes[ModuloClientes->indice].dataDeNascimento.mes);
     printf("ANO: ");
     scanf("%d", &ModuloClientes->listaDeClientes[ModuloClientes->indice].dataDeNascimento.ano);
-    fprintf(arquivoCliente, "Data de nascimento: %d/ %d/%d \n", ModuloClientes->listaDeClientes[ModuloClientes->indice].dataDeNascimento.dia,
+    fprintf(arquivoCliente, "\"Data de nascimento\": \"%d/ %d/%d \",\n", ModuloClientes->listaDeClientes[ModuloClientes->indice].dataDeNascimento.dia,
     ModuloClientes->listaDeClientes[ModuloClientes->indice].dataDeNascimento.mes, ModuloClientes->listaDeClientes[ModuloClientes->indice].dataDeNascimento.ano);
     limpezaDoBuffer();
     printf("Digite o endereço do cliente: \n");
     printf("CIDADE: ");
     limpezaDoBuffer();
     fgets(ModuloClientes->listaDeClientes[ModuloClientes->indice].enderecoCompleto.cidade,49,stdin);
+    formatador(ModuloClientes->listaDeClientes[ModuloClientes->indice].enderecoCompleto.cidade);
     printf("BAIRRO: ");
     limpezaDoBuffer();
     fgets(ModuloClientes->listaDeClientes[ModuloClientes->indice].enderecoCompleto.bairro,49,stdin);
+    formatador(ModuloClientes->listaDeClientes[ModuloClientes->indice].enderecoCompleto.bairro);
     printf("RUA: ");
     limpezaDoBuffer();
     fgets(ModuloClientes->listaDeClientes[ModuloClientes->indice].enderecoCompleto.rua, 49,stdin);
+    formatador(ModuloClientes->listaDeClientes[ModuloClientes->indice].enderecoCompleto.rua);
     printf("CEP: ");
     limpezaDoBuffer();
     fgets(ModuloClientes->listaDeClientes[ModuloClientes->indice].enderecoCompleto.cep, 49 , stdin);
+    formatador(ModuloClientes->listaDeClientes[ModuloClientes->indice].enderecoCompleto.cep);
     printf("NÚMERO: ");
     scanf("%d", &ModuloClientes->listaDeClientes[ModuloClientes->indice].enderecoCompleto.numero);
-    fprintf(arquivoCliente, "Endereço: Cidade %s Bairro: %s rua: %s CEP: %s numero: %d\n",ModuloClientes->listaDeClientes[ModuloClientes->indice].enderecoCompleto.cidade,
+    fprintf(arquivoCliente, "\"Endereço\":{\n \"Cidade\": \"%s\",\n \"Bairro\": \"%s \",\n\"rua\":\" %s\",\n \"CEP\": \"%s\",\n \"numero\": %d\n},\n",ModuloClientes->listaDeClientes[ModuloClientes->indice].enderecoCompleto.cidade,
      ModuloClientes->listaDeClientes[ModuloClientes->indice].enderecoCompleto.bairro,ModuloClientes->listaDeClientes[ModuloClientes->indice].enderecoCompleto.rua,
      ModuloClientes->listaDeClientes[ModuloClientes->indice].enderecoCompleto.cep, ModuloClientes->listaDeClientes[ModuloClientes->indice].enderecoCompleto.numero);
     printf("Possui debido registrado? 0-não 1 - sim \n");
     scanf("%hd", &ModuloClientes->listaDeClientes[ModuloClientes->indice].debitoRegistrado);
     if(ModuloClientes->listaDeClientes[ModuloClientes->indice].debitoRegistrado == 0){
-        fprintf(arquivoCliente, "Não possui debito\n");
+        fprintf(arquivoCliente, "\"Debito\": false,\n");
     }else{
-         fprintf(arquivoCliente, "Possui\n");
+         fprintf(arquivoCliente, "\"Debito\": true,\n");
     }
     
     printf("-------------------------------------------\n");
@@ -89,27 +94,31 @@ void lerCliente(ModuloClientes *ModuloClientes){
     scanf("%hd", &ModuloClientes->listaDeClientes[ModuloClientes->indice].tipoCliente);
     if(ModuloClientes->listaDeClientes[ModuloClientes->indice].tipoCliente == 0){
         printf("VOCÊ SELECIONOU PESSOA FISICA!!\n");
-        fprintf(arquivoCliente, "PESSOA FISICA \n");
+        fprintf(arquivoCliente, "\"Pessoa\":\"Fisica\", \n");
         printf("Digite o RG do cliente: \n");
         limpezaDoBuffer();
         fgets(ModuloClientes->listaDeClientes[ModuloClientes->indice].identidade, 49, stdin);
-        fprintf(arquivoCliente, "RG: %s\n",ModuloClientes->listaDeClientes[ModuloClientes->indice].identidade );
+        formatador(ModuloClientes->listaDeClientes[ModuloClientes->indice].identidade);
+        fprintf(arquivoCliente, "\"RG\": \"%s\",\n",ModuloClientes->listaDeClientes[ModuloClientes->indice].identidade );
         printf("Digite o CPF do clitente \n");
         limpezaDoBuffer();
         fgets(ModuloClientes->listaDeClientes[ModuloClientes->indice].ID, 49 , stdin);
-        fprintf(arquivoCliente, "CPF: %s\n", ModuloClientes->listaDeClientes[ModuloClientes->indice].ID );
+        formatador(ModuloClientes->listaDeClientes[ModuloClientes->indice].ID);
+        fprintf(arquivoCliente, "\"CPF\": \"%s\"\n}", ModuloClientes->listaDeClientes[ModuloClientes->indice].ID );
     }
     if(ModuloClientes->listaDeClientes[ModuloClientes->indice].tipoCliente == 1){
         printf("VOCÊ SELECIONOU PESSOA JURIDICA!!\n");
-        fprintf(arquivoCliente, "PESSOA JURIDICA \n");
+        fprintf(arquivoCliente, "\"Pessoa\":\"Juridica\",\n");
         printf("Digite o CNPJ do clitente \n");
         limpezaDoBuffer();
         fgets(ModuloClientes->listaDeClientes[ModuloClientes->indice].ID, 49, stdin);
-        fprintf(arquivoCliente, "CNPJ: %s\n", ModuloClientes->listaDeClientes[ModuloClientes->indice].ID );
+        formatador(ModuloClientes->listaDeClientes[ModuloClientes->indice].ID);
+        fprintf(arquivoCliente, "\"CNPJ\": \"%s\"\n}", ModuloClientes->listaDeClientes[ModuloClientes->indice].ID );
     }
         limparConsole();
         //imprimeInfoCliente(*ModuloClientes);
         limpezaDoBuffer();
+        fclose(arquivoCliente);
 }
 
 void iniciarModuloCliente(ModuloClientes *ModuloClientes){
@@ -124,7 +133,7 @@ void inserirCliente(ModuloClientes *ModuloClientes, TCliente Cliente){
 }
 
 int pesquisarCliente(ModuloClientes ModuloClientes, TCliente Cliente){
-    for(int i = 0; i < ModuloClientes.indice; i++){
+    for(int i = 0; i <= ModuloClientes.indice; i++){
         if(strncmp(Cliente.ID, ModuloClientes.listaDeClientes[i].ID, TAM) == 0){
             printf("Cliente encontrado!");
             return i;

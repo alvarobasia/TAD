@@ -33,6 +33,7 @@ int main()
     ModuloClientes clientes1;
     ModuloProdutos produtos1;
     ModuloVendas vendas1;
+    int erro;
     setlocale(LC_ALL, "portuguese");
     iniciarModuloCliente(&clientes1);
     iniciarModuloProduto(&produtos1);
@@ -43,11 +44,14 @@ int main()
     lerProduto(&produtos1);
     imprimeInfoProduto(produtos1);
     inserirProduto(&produtos1, produtos1.listaDeProdutos[produtos1.indice]);
-    printf("dsd");
     limpezaDoBuffer();
-    lerVendas(&vendas1, &clientes1, &produtos1);
-    imprimeVendas(vendas1);
-    inserirVendas(&vendas1, vendas1.vendasRealizadas[vendas1.indice]);
+    erro = lerVendas(&vendas1, &clientes1, &produtos1);
+    if(erro = 0){
+        imprimeVendas(vendas1);
+        inserirVendas(&vendas1, vendas1.vendasRealizadas[vendas1.indice]);
+    }else{
+        printf("Venda não concluida");
+    }
     //registrador(&clientes1, &produtos1, &vendas1);
     return 0;
 }

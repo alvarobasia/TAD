@@ -2,26 +2,27 @@
 #include <stdio.h>
 #include <string.h>
 #include <locale.h>
+#include <unistd.h>
 #include "vendas.h"
 
-void imprimeVendas(ModuloVendas ModuloVendas, ModuloClientes ModuloClientes, ModuloProdutos ModuloProdutos){
-    puts("------INFORMAÇÕES DO PRODUTO---------\n");
-    printf("----Comprador----\n");
-    imprimeInfoCliente(ModuloClientes);
-    printf("----Produto-------\n");
-    imprimeInfoProduto(ModuloProdutos);
+void imprimeVendas(ModuloVendas ModuloVendas){
+    // puts("------INFORMAÇÕES DO PRODUTO---------\n");
+    // printf("----Comprador----\n");
+    // imprimeInfoCliente(ModuloClientes);
+    // printf("----Produto-------\n");
+    // imprimeInfoProduto(ModuloProdutos);
     printf("Codigo do produto comprado: ");
     printf("%d\n", ModuloVendas.vendasRealizadas[ModuloVendas.indice].codigo);
-    if(ModuloClientes.listaDeClientes[ModuloClientes.indice].tipoCliente == 0){
-        printf("Comprador: Pessoa Fisica\n");
-        printf("CPF: ");
-        printf("%s\n", ModuloVendas.vendasRealizadas[ModuloVendas.indice].ID);
-    }
-    if(ModuloClientes.listaDeClientes[ModuloClientes.indice].tipoCliente == 1){
-        printf("Comprador: Pessoa Jurídica\n");
-        printf("CNPJ: ");
-        printf("%s\n", ModuloVendas.vendasRealizadas[ModuloVendas.indice].ID);
-    }
+    // if(ModuloClientes.listaDeClientes[ModuloClientes.indice].tipoCliente == 0){
+    //     printf("Comprador: Pessoa Fisica\n");
+    //     printf("CPF: ");
+    //     printf("%s\n", ModuloVendas.vendasRealizadas[ModuloVendas.indice].ID);
+    // }
+    // if(ModuloClientes.listaDeClientes[ModuloClientes.indice].tipoCliente == 1){
+    //     printf("Comprador: Pessoa Jurídica\n");
+    //     printf("CNPJ: ");
+    //     printf("%s\n", ModuloVendas.vendasRealizadas[ModuloVendas.indice].ID);
+    // }
     printf("Data da realização da venda: ");
     printf("%d / %d / %d\n", ModuloVendas.vendasRealizadas[ModuloVendas.indice].dataDaVenda.dia,
     ModuloVendas.vendasRealizadas[ModuloVendas.indice].dataDaVenda.mes, ModuloVendas.vendasRealizadas[ModuloVendas.indice].dataDaVenda.ano);
@@ -36,7 +37,7 @@ void imprimeVendas(ModuloVendas ModuloVendas, ModuloClientes ModuloClientes, Mod
     printf("------------------------------------------\n");
 }
 
-void lerVendas(ModuloVendas *ModuloVendas, ModuloClientes* ModuloClientes, ModuloProdutos *ModuloProdutos){
+int lerVendas(ModuloVendas *ModuloVendas, ModuloClientes* ModuloClientes, ModuloProdutos *ModuloProdutos){
     printf("-------------------------------------------\n");
     printf("--------***EFETUAR VENDA***-------------\n");
     TCliente cliente;
@@ -52,11 +53,12 @@ void lerVendas(ModuloVendas *ModuloVendas, ModuloClientes* ModuloClientes, Modul
     if(feedbackCliente == -1){
         //limparConsole();
         printf("Saindo da função");
-        //return;
+        //sleep(5);
+        return -1;
     }
     if (ModuloClientes->listaDeClientes[feedbackCliente].debitoRegistrado == 1){
         printf("Cliente possui debito registrado\n");
-        return;
+        return -1;
     }
     printf("Digite o código do produto: \n");
     limpezaDoBuffer();
@@ -65,10 +67,11 @@ void lerVendas(ModuloVendas *ModuloVendas, ModuloClientes* ModuloClientes, Modul
     if(feedbackProduto == -1){
         limparConsole();
         printf("Saindo da função");
-        return; 
+        return -1; 
     }
     if(ModuloProdutos->listaDeProdutos[feedbackProduto].quantidadeProd == 0){
         printf("Em falta!\n");
+        return -1;
     }
     ModuloVendas->vendasRealizadas[ModuloVendas->indice].codigo = produto.codigoDoProd;
     strcpy(ModuloVendas->vendasRealizadas[ModuloVendas->indice].ID, cliente.ID );
@@ -98,6 +101,7 @@ void lerVendas(ModuloVendas *ModuloVendas, ModuloClientes* ModuloClientes, Modul
        ModuloVendas->vendasRealizadas[ModuloVendas->indice].tipoDePagamento = 1;
     }
     ModuloProdutos->listaDeProdutos[feedbackProduto].quantidadeProd--;
+    return 0;
 }
 
 void iniciarModuloVendas(ModuloVendas *ModuloVendas){

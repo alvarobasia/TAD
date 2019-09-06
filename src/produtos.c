@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <locale.h>
+#include <unistd.h>
 #include "produtos.h"
 
 void imprimeInfoProduto(ModuloProdutos modulo){
@@ -67,12 +68,15 @@ void inserirProduto(ModuloProdutos *ModuloProdutos, TProdutos Produtos){
 }
 
 int pesquisarProduto(ModuloProdutos ModuloProdutos, TProdutos  Produtos){
-    for(int i = 0; i < ModuloProdutos.indice; i++){
+    int i;
+    for(i = 0; i <= ModuloProdutos.indice; i++){
         if(ModuloProdutos.listaDeProdutos[i].codigoDoProd == Produtos.codigoDoProd){
             printf("Produto encontrado");
+            sleep(5);
             return i;
         }
     }
-    printf("Produto inexistente");
+    printf("Produto inexistente\n");
+    sleep(5000);
     return -1;
 }
