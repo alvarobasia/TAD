@@ -25,14 +25,21 @@ typedef struct _ModuloClientes{
     int indice;
 }ModuloClientes;
 
-void imprimeInfoCliente(ModuloClientes modulo);
+void imprimeInfoCliente(TCliente modulo);
 
-void lerCliente(ModuloClientes *ModuloClientes);
+void lerCliente(TCliente *ModuloClientes);
 
 void iniciarModuloCliente(ModuloClientes *ModuloClientes);
 
 void inserirCliente(ModuloClientes *ModuloClientes, TCliente Cliente);
 
 int pesquisarCliente(ModuloClientes ModuloClientes, TCliente Cliente);
+
+void imprimirTodosOsClientes(ModuloClientes ModuloClientes);
+
+void alterarCliente(ModuloClientes* ModuloClientes, TCliente clientes);
+
+void excluirCLiente(ModuloClientes* ModuloClientes, TCliente cliente);
+
 
 #endif

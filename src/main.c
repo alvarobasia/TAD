@@ -38,20 +38,13 @@ int main()
     iniciarModuloCliente(&clientes1);
     iniciarModuloProduto(&produtos1);
     iniciarModuloVendas(&vendas1);
-    lerCliente(&clientes1);
-    imprimeInfoCliente(clientes1);
+    lerCliente(&clientes1.listaDeClientes[clientes1.indice]);
+    imprimeInfoCliente(clientes1.listaDeClientes[clientes1.indice]);
     inserirCliente(&clientes1, clientes1.listaDeClientes[clientes1.indice]);
-    lerProduto(&produtos1);
-    imprimeInfoProduto(produtos1);
+    lerProduto(&produtos1.listaDeProdutos[produtos1.indice]);
+    imprimeInfoProduto(produtos1.listaDeProdutos[produtos1.indice]);
     inserirProduto(&produtos1, produtos1.listaDeProdutos[produtos1.indice]);
     limpezaDoBuffer();
-    erro = lerVendas(&vendas1, &clientes1, &produtos1);
-    if(erro = 0){
-        imprimeVendas(vendas1);
-        inserirVendas(&vendas1, vendas1.vendasRealizadas[vendas1.indice]);
-    }else{
-        printf("Venda não concluida");
-    }
     //registrador(&clientes1, &produtos1, &vendas1);
     return 0;
 }

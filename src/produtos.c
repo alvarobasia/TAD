@@ -2,57 +2,53 @@
 #include <stdio.h>
 #include <string.h>
 #include <locale.h>
-#include <unistd.h>
 #include "produtos.h"
 
-void imprimeInfoProduto(ModuloProdutos modulo){
-    puts("------INFORMAÇÕES DO PRODUTO---------");
+void imprimeInfoProduto(TProdutos modulo){
+    puts("------INFORMA��ES DO PRODUTO---------");
     printf("Codigo do produto: ");
-    printf("%d\n", modulo.listaDeProdutos[modulo.indice].codigoDoProd);
+    printf("%d\n", modulo.codigoDoProd);
     printf("Nome do produto: ");
-    printf("%s\n", modulo.listaDeProdutos[modulo.indice].nomeDoProd);
-    printf("Descrição do produto: ");
-    printf(" ' %s '\n", modulo.listaDeProdutos[modulo.indice].descricaoDoProd);
-    printf("Data de fabricação: ");
-    printf("%d / %d/ %d\n", modulo.listaDeProdutos[modulo.indice].dataFabri.dia,
-    modulo.listaDeProdutos[modulo.indice].dataFabri.mes,
-    modulo.listaDeProdutos[modulo.indice].dataFabri.ano);
+    printf("%s\n", modulo.nomeDoProd);
+    printf("Descri��o do produto: ");
+    printf(" \' %s \'\n", modulo.descricaoDoProd);
+    printf("Data de fabrica��o: ");
+    printf("%d / %d/ %d\n", modulo.dataFabri.dia,
+    modulo.dataFabri.mes,modulo.dataFabri.ano);
     printf("Lote do produto: ");
-    printf("%s\n", modulo.listaDeProdutos[modulo.indice].loteDoProd);
-    printf("Preço do produto: ");
-    printf("R$ %f\n", modulo.listaDeProdutos[modulo.indice].precoUnit);
+    printf("%s\n", modulo.loteDoProd);
+    printf("Pre�o do produto: ");
+    printf("R$ %f\n", modulo.precoUnit);
     printf("Quantidade de produtos no estoque: ");
-    printf("%d\n", modulo.listaDeProdutos[modulo.indice].quantidadeProd);
+    printf("%d\n", modulo.quantidadeProd);
     printf("--------------------------------------------------\n");
 }
 
-void lerProduto(ModuloProdutos *ModuloProdutos){
+void lerProduto(TProdutos *ModuloProdutos){
     printf("-------------------------------------------\n");
     printf("--------***REGISTRAR PRODUTO***-------------\n");
     printf("Digite o codigo do produto \n");
-    scanf("%d", &ModuloProdutos->listaDeProdutos[ModuloProdutos->indice].codigoDoProd);
+    scanf("%d", &ModuloProdutos->codigoDoProd);
     limpezaDoBuffer();
     printf("Digite o nome do produto: \n");
-    fgets(ModuloProdutos->listaDeProdutos[ModuloProdutos->indice].nomeDoProd, 49, stdin);
+    fgets(ModuloProdutos->nomeDoProd, 49, stdin);
     limpezaDoBuffer();
-    printf("Digite a descrição do produto: \n");
-    fgets(ModuloProdutos->listaDeProdutos[ModuloProdutos->indice].descricaoDoProd, 49, stdin);
-    printf("Digite a data de fabricação do produto\n");
+    printf("Digite a descri��o do produto: \n");
+    fgets(ModuloProdutos->descricaoDoProd, 49, stdin);
+    printf("Digite a data de fabrica��o do produto\n");
     printf("DIA: ");
-    scanf("%d", &ModuloProdutos->listaDeProdutos[ModuloProdutos->indice].dataFabri.dia);
-    printf("MÊS: ");
-    scanf("%d", &ModuloProdutos->listaDeProdutos[ModuloProdutos->indice].dataFabri.mes);
+    scanf("%d", &ModuloProdutos->dataFabri.dia);
+    printf("M�S: ");
+    scanf("%d", &ModuloProdutos->dataFabri.mes);
     printf("ANO: ");
-    scanf("%d", &ModuloProdutos->listaDeProdutos[ModuloProdutos->indice].dataFabri.ano);
+    scanf("%d", &ModuloProdutos->dataFabri.ano);
     printf("Digite o lote do produto: \n");
     limpezaDoBuffer();
-    fgets(ModuloProdutos->listaDeProdutos[ModuloProdutos->indice].loteDoProd, 49, stdin);
+    fgets(ModuloProdutos->loteDoProd, 49, stdin);
     printf("Digite o preço do produto: \n");
-    scanf("%f", &ModuloProdutos->listaDeProdutos[ModuloProdutos->indice].precoUnit);
+    scanf("%f", &ModuloProdutos->precoUnit);
     printf("Digite a quantidade de produtos que o estoque possui: \n");
-    scanf("%d", &ModuloProdutos->listaDeProdutos[ModuloProdutos->indice].quantidadeProd);
-    imprimeInfoProduto(*ModuloProdutos);
-    //imprimeInfoProduto(*ModuloProdutos); 
+    scanf("%d", &ModuloProdutos->quantidadeProd);
 }
 
 void iniciarModuloProduto(ModuloProdutos *ModuloProdutos){
@@ -69,14 +65,25 @@ void inserirProduto(ModuloProdutos *ModuloProdutos, TProdutos Produtos){
 
 int pesquisarProduto(ModuloProdutos ModuloProdutos, TProdutos  Produtos){
     int i;
-    for(i = 0; i <= ModuloProdutos.indice; i++){
+    for(i = 0; i < ModuloProdutos.indice; i++){
         if(ModuloProdutos.listaDeProdutos[i].codigoDoProd == Produtos.codigoDoProd){
-            printf("Produto encontrado");
-            sleep(5);
             return i;
         }
     }
-    printf("Produto inexistente\n");
-    sleep(5000);
     return -1;
+}
+void imprimirTodosOsProdutos(ModuloProdutos produtos){
+    printf("Produtos: \n");
+    for(int i = 0; i < produtos.indice; i++){
+        imprimeInfoProduto(produtos.listaDeProdutos[i]);
+    }
+}
+void alterarProduto(ModuloProdutos* ModuloProdutos, TProdutos produtos){
+  int resposta = pesquisarProduto(*ModuloProdutos, produtos);
+  if(resposta == -1){
+    printf("\nProduto não encontrado para alteração");
+    return;
+  }
+  printf("Alterar Produto");
+  lerProduto(&ModuloProdutos->listaDeProdutos[resposta]);
 }
