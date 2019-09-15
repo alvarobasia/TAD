@@ -39,7 +39,7 @@ void imprimirTodosOsClientes(ModuloClientes ModuloClientes);
 
 void alterarCliente(ModuloClientes* ModuloClientes, TCliente clientes);
 
-void excluirCLiente(ModuloClientes* ModuloClientes, TCliente cliente);
+void excluirCliente(ModuloClientes* ModuloClientes, TCliente cliente);
 
 
 #endif

@@ -18,6 +18,9 @@ int main()
     iniciarModuloCliente(&clientes1);
     iniciarModuloProduto(&produtos1);
     iniciarModuloVendas(&vendas1);
-    Menu();
+    TCliente Cliente;
+    TProdutos Produtos;
+    TVendas Vendas;
+    Menu(&clientes1,Cliente, &produtos1, Produtos, &vendas1, Vendas);
     return 0;
 }

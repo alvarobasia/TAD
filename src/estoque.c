@@ -4,13 +4,19 @@
 #include <locale.h>
 
 void limpezaDoBuffer(){
-    __fpurge(stdin);
-    fflush(stdin); 
+    #ifdef unix
+        __fpurge(stdin);
+    #elif _WIN32 
+        fflush(stdin);
+    #endif
 }
 
 void limparConsole(){
-    system("clear");
-    system("cls");
+    #ifdef unix
+       system("clear");
+    #elif _WIN32
+       system("cls");
+    #endif
 }
 
 void formatador(char string[]){

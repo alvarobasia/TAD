@@ -4,25 +4,12 @@
 #include <locale.h>
 #include <unistd.h>
 #include "vendas.h"
-
+#include "menu.h"
 void imprimeVendas(TVendas Vendas){
-    // puts("------INFORMAÇÕES DO PRODUTO---------\n");
-    // printf("----Comprador----\n");
-    // imprimeInfoCliente(ModuloClientes);
-    // printf("----Produto-------\n");
-    // imprimeInfoProduto(ModuloProdutos);
+    limpezaDoBuffer();
+    printf(AMA);
     printf("Codigo do produto comprado: ");
     printf("%d\n", Vendas.codigo);
-    // if(ModuloClientes.listaDeClientes[ModuloClientes.indice].tipoCliente == 0){
-    //     printf("Comprador: Pessoa Fisica\n");
-    //     printf("CPF: ");
-    //     printf("%s\n", ModuloVendas.vendasRealizadas[ModuloVendas.indice].ID);
-    // }
-    // if(ModuloClientes.listaDeClientes[ModuloClientes.indice].tipoCliente == 1){
-    //     printf("Comprador: Pessoa Jurídica\n");
-    //     printf("CNPJ: ");
-    //     printf("%s\n", ModuloVendas.vendasRealizadas[ModuloVendas.indice].ID);
-    // }
     printf("Data da realização da venda: ");
     printf("%d / %d / %d\n", Vendas.dataDaVenda.dia,
     Vendas.dataDaVenda.mes, Vendas.dataDaVenda.ano);
@@ -35,9 +22,14 @@ void imprimeVendas(TVendas Vendas){
         Vendas.prazoParaPagamento.mes, Vendas.prazoParaPagamento.ano);
     }
     printf("------------------------------------------\n");
+    printf(DEF_LETRA);
+    printf("PRESSIONE ENTER PARA CONTINUAR!!!!");
+    getchar();
 }
 
 int lerVendas(TVendas *Vendas,ModuloClientes* ModuloClientes, ModuloProdutos *ModuloProdutos){
+    limparConsole();
+    printf(GREEN);
     printf("-------------------------------------------\n");
     printf("--------***EFETUAR VENDA***-------------\n");
     TCliente cliente;
@@ -47,61 +39,89 @@ int lerVendas(TVendas *Vendas,ModuloClientes* ModuloClientes, ModuloProdutos *Mo
     int feedbackCliente;
     int feedbackProduto;
     printf("Digite o CPF/CNPJ do cliente \n");
-    fgets(cliente.ID, 49, stdin);
+    printf(DEF_LETRA);
     limpezaDoBuffer();
+    fgets(cliente.ID, TAM, stdin);
+    formatador(cliente.ID);
     feedbackCliente = pesquisarCliente(*ModuloClientes, cliente);
     if(feedbackCliente == -1){
-        //limparConsole();
-        printf("Saindo da função");
-        //sleep(5);
+        limparConsole();
+        printf(RED);
+        printf("Cliente não encontrado, saindo...\n");
+        sleep(2);
         return -1;
     }
     if (ModuloClientes->listaDeClientes[feedbackCliente].debitoRegistrado == 1){
-        printf("Cliente possui debito registrado\n");
+        printf(RED);
+        printf("Cliente possui debito registrado!! Inpossível concluír venda!\n");
+        sleep(2);
         return -1;
     }
+    printf(GREEN);
     printf("Digite o código do produto: \n");
     limpezaDoBuffer();
+    printf(DEF_LETRA);
     scanf("%d", &produto.codigoDoProd);
     feedbackProduto = pesquisarProduto(*ModuloProdutos, produto);
     if(feedbackProduto == -1){
         limparConsole();
-        printf("Saindo da função");
+        printf(RED);
+        printf("Produto não encontrado, saindo...\n");
+        sleep(2);
         return -1; 
     }
     if(ModuloProdutos->listaDeProdutos[feedbackProduto].quantidadeProd == 0){
-        printf("Em falta!\n");
+        limparConsole();
+        printf(RED);
+        printf("produto em falta! Impossivel concluír venda!!\n");
+        sleep(2);
         return -1;
     }
     Vendas->codigo = produto.codigoDoProd;
     strcpy(Vendas->ID, cliente.ID );
+    printf(GREEN);
     printf("Digite a data da realização da venda: \n");
     printf("DIA: ");
+    printf(DEF_LETRA);
     scanf("%d", &Vendas->dataDaVenda.dia);
+    printf(GREEN);
     printf("MÊS: ");
+    printf(DEF_LETRA);
     scanf("%d", &Vendas->dataDaVenda.mes);
+    printf(GREEN);
     printf("ANO: ");
-       scanf("%d", &Vendas->dataDaVenda.ano);
+    printf(DEF_LETRA);
+    scanf("%d", &Vendas->dataDaVenda.ano);
+    printf(GREEN);
     printf("Digite o tipo de pagamento: 1 - vista 2- prazo \n");
     scanf("%d", &Vendas->tipoDePagamento);
     if(Vendas->tipoDePagamento == 2){
+        printf(GREEN);
         printf("----------Á PRAZO-------------\n");
         printf("Digite o prazo da compra da compra: \n");
         printf("DIA: ");
+        printf(DEF_LETRA);
         scanf("%d", &Vendas->prazoParaPagamento.dia);
+        printf(GREEN);
         printf("MÊS: ");
+        printf(DEF_LETRA);
         scanf("%d", &Vendas->prazoParaPagamento.mes);
+        printf(GREEN);
         printf("ANO: ");
-        scanf("%d", &Vendas->prazoParaPagamento.mes);
+        printf(DEF_LETRA);
+        scanf("%d", &Vendas->prazoParaPagamento.ano);
         Vendas->tipoDePagamento = 2;
         ModuloClientes->listaDeClientes[feedbackCliente].debitoRegistrado = 1;  
      }
     if(Vendas->tipoDePagamento == 1){
+       printf(GREEN);
        printf("----------Á VISTA-------------\n"); 
+       printf(DEF_LETRA);
        Vendas->tipoDePagamento = 1;
     }
     ModuloProdutos->listaDeProdutos[feedbackProduto].quantidadeProd--;
     return 0;
+    limparConsole();
 }
 
 void iniciarModuloVendas(ModuloVendas *ModuloVendas){
