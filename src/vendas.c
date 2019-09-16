@@ -8,7 +8,7 @@
 void imprimeVendas(TVendas Vendas){
     limpezaDoBuffer();
     printf(AMA);
-    printf("Codigo do produto comprado: ");
+    printf("\nCodigo do produto comprado: ");
     printf("%d\n", Vendas.codigo);
     printf("Data da realização da venda: ");
     printf("%d / %d / %d\n", Vendas.dataDaVenda.dia,
@@ -38,7 +38,7 @@ int lerVendas(TVendas *Vendas,ModuloClientes* ModuloClientes, ModuloProdutos *Mo
     int indiceCliente;
     int feedbackCliente;
     int feedbackProduto;
-    printf("Digite o CPF/CNPJ do cliente \n");
+    printf("Digite o CPF/CNPJ do cliente: ");
     printf(DEF_LETRA);
     limpezaDoBuffer();
     fgets(cliente.ID, TAM, stdin);
@@ -58,7 +58,7 @@ int lerVendas(TVendas *Vendas,ModuloClientes* ModuloClientes, ModuloProdutos *Mo
         return -1;
     }
     printf(GREEN);
-    printf("Digite o código do produto: \n");
+    printf("Digite o código do produto: ");
     limpezaDoBuffer();
     printf(DEF_LETRA);
     scanf("%d", &produto.codigoDoProd);
@@ -135,21 +135,27 @@ void inserirVendas(ModuloVendas *ModuloVendas, TVendas Vendas){
     }
 }
 
-int pesquisarVendas(ModuloVendas ModuloVendas, ModuloProdutos ModuloProdutos, ModuloClientes ModuloClientes){
-    printf("Digite o CPF/CNPJ do comprador: ");
-    TCliente Cliente;
-    fgets(Cliente.ID, TAM, stdin);
+int pesquisarVendas(ModuloVendas ModuloVendas, ModuloProdutos ModuloProdutos, ModuloClientes ModuloClientes, 
+TCliente Cliente, TProdutos Produtos){
+    //printf("Digite o CPF/CNPJ do comprador: ");
+    //TCliente Cliente;
+    //fgets(Cliente.ID, TAM, stdin);
+    //formatador(Cliente.ID);
     int respostaCliente = pesquisarCliente(ModuloClientes, Cliente);
     if( respostaCliente == -1){
-        printf("Cliente não encontrado");
+        printf(RED);
+        printf("Cliente não encontrado\n");
+        printf(DEF_LETRA);
         return -1;
     }
-    TProdutos Produtos;
-    printf("Digite o código do produto: ");
-    scanf("%d", &Produtos.codigoDoProd);
+    //TProdutos Produtos;
+    //printf("Digite o código do produto: ");
+    //scanf("%d", &Produtos.codigoDoProd);
     int respostaProdutos = pesquisarProduto(ModuloProdutos, Produtos);
     if( respostaProdutos == -1){
-        printf("Produto  não encontrado");
+        printf(RED);
+        printf("Produto  não encontrado\n");
+        printf(DEF_LETRA);
         return -1;
     }
     for ( int i = 0; i < ModuloVendas.indice; i++){
@@ -170,28 +176,47 @@ void imprimirTodasAsVendas(ModuloVendas Vendas){
     }
 }
 
-void alterarVenda(ModuloVendas* ModuloVendas, ModuloProdutos* ModuloProdutos, ModuloClientes* ModuloCliente){
-    printf("Digite o CPF/CNPJ do comprador: ");
-    TCliente Cliente;
-    fgets(Cliente.ID, TAM, stdin);
-    int respostaCliente = pesquisarCliente(*ModuloCliente, Cliente);
-    if( respostaCliente == -1){
-        printf("Cliente não encontrado");
-        return;
-    }
-    TProdutos Produtos;
-    printf("Digite o código do produto: ");
-    scanf("%d", &Produtos.codigoDoProd);
-    int respostaProdutos = pesquisarProduto(*ModuloProdutos, Produtos);
-    if( respostaProdutos == -1){
-        printf("Produto  não encontrado");
-        return;
-    }
-    int respostaVendas = pesquisarVendas(*ModuloVendas, *ModuloProdutos, *ModuloCliente);
-    if (respostaVendas == -1){
-        printf("Venda não encontrada");
-        return;
-    }
-    
+void alterarVenda(ModuloVendas* ModuloVendas, ModuloProdutos* ModuloProdutos, ModuloClientes* ModuloCliente, TCliente cliente,
+TProdutos produtos){
+    limparConsole();
+    //printf("Digite o CPF/CNPJ do comprador: ");
+    //TCliente Cliente;
+    //fgets(Cliente.ID, TAM, stdin);
+    //formatador(Cliente.ID);
+    //int respostaCliente = pesquisarCliente(*ModuloCliente, Cliente);
+    //if( respostaCliente == -1){
+    //    printf("Cliente não encontrado");
+    //    return;
+    //}
+    //TProdutos Produtos;
+    //printf("Digite o código do produto: ");
+    //scanf("%d", &Produtos.codigoDoProd);
+    //int respostaProdutos = pesquisarProduto(*ModuloProdutos, Produtos);
+    //if( respostaProdutos == -1){
+    //    printf("sdada");
+    //    sleep(2);
+    //    return;
+    //}
+    int respostaVendas = pesquisarVendas(*ModuloVendas, *ModuloProdutos, *ModuloCliente, cliente, produtos);
+    int respostaProdutos = pesquisarProduto(*ModuloProdutos, produtos);
+    int respostaClientes = pesquisarCliente(*ModuloCliente, cliente);
+    ModuloProdutos->listaDeProdutos[respostaProdutos].quantidadeProd++;
+    ModuloCliente->listaDeClientes[respostaClientes].debitoRegistrado == 0;
     lerVendas(&ModuloVendas->vendasRealizadas[respostaVendas], ModuloCliente, ModuloProdutos);
+    imprimeVendas(ModuloVendas->vendasRealizadas[respostaVendas]);
+}
+void excluirVendas(ModuloVendas* ModuloVendas, ModuloClientes* ModuloClientes, ModuloProdutos* Produtos, TCliente cliente,
+TProdutos produtos){
+  int resposta = pesquisarVendas(*ModuloVendas, *Produtos, *ModuloClientes, cliente, produtos);
+  for (int j = resposta; j < ModuloVendas->indice ; j++) {
+      ModuloVendas->vendasRealizadas[j] = ModuloVendas->vendasRealizadas[j + 1];
+  }
+  int respostaProdutos = pesquisarProduto(*Produtos, produtos);
+  int respostaClientes = pesquisarCliente(*ModuloClientes, cliente);
+  Produtos->listaDeProdutos[respostaProdutos].quantidadeProd++;
+  ModuloClientes->listaDeClientes[respostaClientes].debitoRegistrado == 0;
+  ModuloVendas->indice--;
+  printf(GREEN);
+  printf("Venda excluída com sucesso! \n");
+  sleep(3);
 }

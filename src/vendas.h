@@ -34,8 +34,15 @@ void iniciarModuloVendas(ModuloVendas *ModuloVendas);
 
 void inserirVendas(ModuloVendas *ModuloVendas, TVendas Vendas);
 
-int pesquisarVendas(ModuloVendas ModuloVendas, ModuloProdutos ModuloProdutos, ModuloClientes ModuloClientes);
+int pesquisarVendas(ModuloVendas ModuloVendas, ModuloProdutos ModuloProdutos, ModuloClientes ModuloClientes, 
+TCliente Cliente, TProdutos Produtos);
 
 void imprimirTodasAsVendas(ModuloVendas Vendas);
+
+void alterarVenda(ModuloVendas* ModuloVendas, ModuloProdutos* ModuloProdutos, ModuloClientes* ModuloCliente, TCliente cliente,
+TProdutos produtos);
+
+void excluirVendas(ModuloVendas* ModuloVendas, ModuloClientes* ModuloClientes, ModuloProdutos* Produtos, TCliente cliente,
+TProdutos produtos);
 
 #endif

@@ -188,51 +188,100 @@ void SubMenuModulo2(ModuloProdutos* Produto, TProdutos produtos){
 void SubMenuModulo3(ModuloVendas* Vendas, TVendas vendas, ModuloProdutos *Produtos, ModuloClientes *Cliente){
     int opcao;
     int resposta;
+    TCliente cliente;
+    TProdutos produtos;
     do{
       printf("\nDIGITE UMA OPÇÃO ------> ");
       scanf("%d", &opcao);
       switch (opcao){
-          case 1: lerVendas(&vendas, &Cliente, &Produtos);
+          case 1: lerVendas(&vendas, Cliente, Produtos);
                   imprimeVendas(vendas);
-                  inserirVendas(&Vendas, vendas);
+                  inserirVendas(Vendas, vendas);
                   MSG_SUB(3, "VENDA", "VENDAS");
                   break;
           case 2: 
                 limparConsole();
+                limpezaDoBuffer();
                 printf(GREEN);
-                resposta = pesquisarVendas(*Vendas, *Produtos, *Cliente);
+                printf("Digite o CPF/CNPJ do comprador: ");
+                printf(DEF_LETRA);
+                fgets(cliente.ID, TAM, stdin);
+                formatador(cliente.ID);
+                printf(GREEN);
+                printf("Digite o código do produto: ");
+                printf(DEF_LETRA);
+                scanf("%d", &produtos.codigoDoProd);
+                resposta = pesquisarVendas(*Vendas, *Produtos, *Cliente, cliente, produtos);
                 if(resposta != -1){
                     printf(GREEN);
-                    printf("Venda encontrada: %s  imprimindo informações...", Vendas->vendasRealizadas[resposta].codigo);
+                    printf("\tVenda encontrada: %d  imprimindo informações...", Vendas->vendasRealizadas[resposta].codigo);
                     imprimeVendas(Vendas->vendasRealizadas[resposta]);
                     MSG_SUB(3, "VENDA", "VENDAS");
-                    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 }else{
                     limparConsole();
                     printf(RED);
-                    printf("\tProduto não encontrado! Retornando ao menu...\n");
+                    printf("\tVenda não encontrada! Retornando ao menu...\n");
                     sleep(2);
                     printf(DEF_LETRA);
-                    MSG_SUB(2, "PRODUTO", "PRODUTOS");
+                    MSG_SUB(3, "VENDA", "VENDAS");
                 }
                 break;
+          case 3: 
+                limparConsole();
+                limpezaDoBuffer();
+                printf(GREEN);
+                printf("Digite o CPF/CNPJ do comprador: ");
+                printf(DEF_LETRA);
+                fgets(cliente.ID, TAM, stdin);
+                formatador(cliente.ID);
+                printf(GREEN);
+                printf("Digite o código do produto: ");
+                printf(DEF_LETRA);
+                scanf("%d", &produtos.codigoDoProd);
+                resposta = pesquisarVendas(*Vendas, *Produtos, *Cliente, cliente, produtos);
+                if(resposta != -1){
+                    printf(GREEN);
+                    printf("\nVenda encontrada: %d  pressione ENTER para alterar a mesma...\n", Vendas->vendasRealizadas[resposta].codigo);
+                    imprimeVendas(Vendas->vendasRealizadas[resposta]);
+                    alterarVenda(Vendas, Produtos, Cliente, cliente, produtos);
+                    MSG_SUB(3, "VENDA", "VENDAS");
+                }else{
+                    limparConsole();
+                    printf(RED);
+                    printf("\tVenda não encontrada! Retornando ao menu...\n");
+                    sleep(2);
+                    printf(DEF_LETRA);
+                    MSG_SUB(3, "VENDA", "VENDAS");
+                }
                 break;
-          /*case 3: 
-                  limparConsole();
-                  printf("Digite o código do produto para ser alterado: ");
-                  limpezaDoBuffer();
-                  scanf("%d", &produtos.codigoDoProd);
-                  alterarProduto(Produto, produtos);
-                  MSG_SUB(2, "PRODUTO", "PRODUTOS");
-                  break;
           case 4: 
-                  limparConsole();
-                  printf("Digite o código do produto para ser excluído: ");
-                  limpezaDoBuffer();
-                  scanf("%d", &produtos.codigoDoProd);
-                  excluirProduto(Produto, produtos);
-                  MSG_SUB(2, "PRODUTO", "PRODUTOS");
-                  break;
+                limparConsole();
+                limpezaDoBuffer();
+                printf(GREEN);
+                printf("Digite o CPF/CNPJ do comprador: ");
+                printf(DEF_LETRA);
+                fgets(cliente.ID, TAM, stdin);
+                formatador(cliente.ID);
+                printf(GREEN);
+                printf("Digite o código do produto: ");
+                printf(DEF_LETRA);
+                scanf("%d", &produtos.codigoDoProd);
+                resposta = pesquisarVendas(*Vendas, *Produtos, *Cliente, cliente, produtos);
+                if(resposta != -1){
+                    printf(GREEN);
+                    printf("\nVenda encontrada: %d  pressione ENTER para excluir a mesma...\n", Vendas->vendasRealizadas[resposta].codigo);
+                    imprimeVendas(Vendas->vendasRealizadas[resposta]);
+                    excluirVendas(Vendas, Cliente, Produtos, cliente, produtos);
+                    MSG_SUB(3, "VENDA", "VENDAS");
+                }else{
+                    limparConsole();
+                    printf(RED);
+                    printf("\tVenda não encontrada! Retornando ao menu...\n");
+                    sleep(2);
+                    printf(DEF_LETRA);
+                    MSG_SUB(3, "VENDA", "VENDAS");
+                }
+                break;
           case 5: break;
           default:
                 limparConsole();
@@ -244,8 +293,8 @@ void SubMenuModulo3(ModuloVendas* Vendas, TVendas vendas, ModuloProdutos *Produt
                 limpezaDoBuffer();
                 sleep(2);
                 limparConsole();
-                MSG_SUB(2, "PRODUTO", "PRODUTOS");
-                break;*/
+                MSG_SUB(3, "VENDA", "VENDAS");
+                break;
       }
     }while (opcao != 5);
 }  
