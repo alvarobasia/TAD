@@ -7,7 +7,6 @@
 #include "menu.h"
 void imprimeVendas(TVendas Vendas){
     limpezaDoBuffer();
-    printf(AMA);
     printf("\nCodigo do produto comprado: ");
     printf("%d\n", Vendas.codigo);
     printf("Data da realização da venda: ");
@@ -22,14 +21,12 @@ void imprimeVendas(TVendas Vendas){
         Vendas.prazoParaPagamento.mes, Vendas.prazoParaPagamento.ano);
     }
     printf("------------------------------------------\n");
-    printf(DEF_LETRA);
     printf("PRESSIONE ENTER PARA CONTINUAR!!!!");
     getchar();
 }
 
 int lerVendas(TVendas *Vendas,ModuloClientes* ModuloClientes, ModuloProdutos *ModuloProdutos){
     limparConsole();
-    printf(GREEN);
     printf("-------------------------------------------\n");
     printf("--------***EFETUAR VENDA***-------------\n");
     TCliente cliente;
@@ -39,84 +36,63 @@ int lerVendas(TVendas *Vendas,ModuloClientes* ModuloClientes, ModuloProdutos *Mo
     int feedbackCliente;
     int feedbackProduto;
     printf("Digite o CPF/CNPJ do cliente: ");
-    printf(DEF_LETRA);
     limpezaDoBuffer();
     fgets(cliente.ID, TAM, stdin);
     formatador(cliente.ID);
     feedbackCliente = pesquisarCliente(*ModuloClientes, cliente);
     if(feedbackCliente == -1){
         limparConsole();
-        printf(RED);
+        limpezaDoBuffer();
         printf("Cliente não encontrado, saindo...\n");
-        sleep(2);
+        printf("PRESSIONE ENTER PARA CONTINUAR\n");
+        getchar();
         return -1;
     }
-    if (ModuloClientes->listaDeClientes[feedbackCliente].debitoRegistrado == 1){
-        printf(RED);
-        printf("Cliente possui debito registrado!! Inpossível concluír venda!\n");
-        sleep(2);
-        return -1;
-    }
-    printf(GREEN);
     printf("Digite o código do produto: ");
     limpezaDoBuffer();
-    printf(DEF_LETRA);
     scanf("%d", &produto.codigoDoProd);
     feedbackProduto = pesquisarProduto(*ModuloProdutos, produto);
     if(feedbackProduto == -1){
         limparConsole();
-        printf(RED);
+        limpezaDoBuffer();
         printf("Produto não encontrado, saindo...\n");
-        sleep(2);
+        printf("PRESSIONE ENTER PARA CONTINUAR\n");
+        getchar();
         return -1; 
     }
     if(ModuloProdutos->listaDeProdutos[feedbackProduto].quantidadeProd == 0){
         limparConsole();
-        printf(RED);
+        limpezaDoBuffer();
         printf("produto em falta! Impossivel concluír venda!!\n");
-        sleep(2);
+        printf("PRESSIONE ENTER PARA CONTINUAR\n");
+        getchar();
         return -1;
     }
     Vendas->codigo = produto.codigoDoProd;
     strcpy(Vendas->ID, cliente.ID );
-    printf(GREEN);
     printf("Digite a data da realização da venda: \n");
     printf("DIA: ");
-    printf(DEF_LETRA);
     scanf("%d", &Vendas->dataDaVenda.dia);
-    printf(GREEN);
     printf("MÊS: ");
-    printf(DEF_LETRA);
     scanf("%d", &Vendas->dataDaVenda.mes);
-    printf(GREEN);
     printf("ANO: ");
-    printf(DEF_LETRA);
     scanf("%d", &Vendas->dataDaVenda.ano);
-    printf(GREEN);
     printf("Digite o tipo de pagamento: 1 - vista 2- prazo \n");
     scanf("%d", &Vendas->tipoDePagamento);
     if(Vendas->tipoDePagamento == 2){
-        printf(GREEN);
         printf("----------Á PRAZO-------------\n");
         printf("Digite o prazo da compra da compra: \n");
         printf("DIA: ");
-        printf(DEF_LETRA);
         scanf("%d", &Vendas->prazoParaPagamento.dia);
-        printf(GREEN);
         printf("MÊS: ");
-        printf(DEF_LETRA);
         scanf("%d", &Vendas->prazoParaPagamento.mes);
-        printf(GREEN);
         printf("ANO: ");
-        printf(DEF_LETRA);
         scanf("%d", &Vendas->prazoParaPagamento.ano);
         Vendas->tipoDePagamento = 2;
         ModuloClientes->listaDeClientes[feedbackCliente].debitoRegistrado = 1;  
      }
     if(Vendas->tipoDePagamento == 1){
-       printf(GREEN);
        printf("----------Á VISTA-------------\n"); 
-       printf(DEF_LETRA);
        Vendas->tipoDePagamento = 1;
     }
     ModuloProdutos->listaDeProdutos[feedbackProduto].quantidadeProd--;
@@ -143,9 +119,7 @@ TCliente Cliente, TProdutos Produtos){
     //formatador(Cliente.ID);
     int respostaCliente = pesquisarCliente(ModuloClientes, Cliente);
     if( respostaCliente == -1){
-        printf(RED);
         printf("Cliente não encontrado\n");
-        printf(DEF_LETRA);
         return -1;
     }
     //TProdutos Produtos;
@@ -153,9 +127,7 @@ TCliente Cliente, TProdutos Produtos){
     //scanf("%d", &Produtos.codigoDoProd);
     int respostaProdutos = pesquisarProduto(ModuloProdutos, Produtos);
     if( respostaProdutos == -1){
-        printf(RED);
         printf("Produto  não encontrado\n");
-        printf(DEF_LETRA);
         return -1;
     }
     for ( int i = 0; i < ModuloVendas.indice; i++){
@@ -171,32 +143,17 @@ TCliente Cliente, TProdutos Produtos){
 
 
 void imprimirTodasAsVendas(ModuloVendas Vendas){
+    limparConsole();
+    printf("Vendas: \n");
     for(int i = 0; i < Vendas.indice; i++){
         imprimeVendas(Vendas.vendasRealizadas[i]);
     }
+    limpezaDoBuffer();
 }
 
 void alterarVenda(ModuloVendas* ModuloVendas, ModuloProdutos* ModuloProdutos, ModuloClientes* ModuloCliente, TCliente cliente,
 TProdutos produtos){
     limparConsole();
-    //printf("Digite o CPF/CNPJ do comprador: ");
-    //TCliente Cliente;
-    //fgets(Cliente.ID, TAM, stdin);
-    //formatador(Cliente.ID);
-    //int respostaCliente = pesquisarCliente(*ModuloCliente, Cliente);
-    //if( respostaCliente == -1){
-    //    printf("Cliente não encontrado");
-    //    return;
-    //}
-    //TProdutos Produtos;
-    //printf("Digite o código do produto: ");
-    //scanf("%d", &Produtos.codigoDoProd);
-    //int respostaProdutos = pesquisarProduto(*ModuloProdutos, Produtos);
-    //if( respostaProdutos == -1){
-    //    printf("sdada");
-    //    sleep(2);
-    //    return;
-    //}
     int respostaVendas = pesquisarVendas(*ModuloVendas, *ModuloProdutos, *ModuloCliente, cliente, produtos);
     int respostaProdutos = pesquisarProduto(*ModuloProdutos, produtos);
     int respostaClientes = pesquisarCliente(*ModuloCliente, cliente);
@@ -205,6 +162,7 @@ TProdutos produtos){
     lerVendas(&ModuloVendas->vendasRealizadas[respostaVendas], ModuloCliente, ModuloProdutos);
     imprimeVendas(ModuloVendas->vendasRealizadas[respostaVendas]);
 }
+
 void excluirVendas(ModuloVendas* ModuloVendas, ModuloClientes* ModuloClientes, ModuloProdutos* Produtos, TCliente cliente,
 TProdutos produtos){
   int resposta = pesquisarVendas(*ModuloVendas, *Produtos, *ModuloClientes, cliente, produtos);
@@ -216,7 +174,8 @@ TProdutos produtos){
   Produtos->listaDeProdutos[respostaProdutos].quantidadeProd++;
   ModuloClientes->listaDeClientes[respostaClientes].debitoRegistrado == 0;
   ModuloVendas->indice--;
-  printf(GREEN);
   printf("Venda excluída com sucesso! \n");
-  sleep(3);
+  limpezaDoBuffer();
+  printf("PRESSIONE ENTER PARA CONTINUAR\n");
+  getchar();
 }

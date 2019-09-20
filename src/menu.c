@@ -8,42 +8,34 @@
 
 void MSG_MENU_PRINCIPAL(){
       limparConsole();
-      for(int i = 0; i < 18 ; i++){
+      for(int i = 0; i < 13 ; i++){
       switch (i){
-        case 0 : printf(INTEN AZU AMA"\n");break; 
-        case 1 : printf(" ||||||||||||||||||      |||||||        ||||||||||     \n");break;
-        case 2 : printf(" ||||||||||||||||||     |||||||||       |||||||||||    \n"); break;
-        case 3 : printf("       |||||           |||||  ||||      |||||||||||||  \n"); break;
-        case 4 : printf("       |||||          |||||||||||||     ||||     ||||| \n"); break;
-        case 5 : printf("       |||||          |||||||||||||     ||||     ||||  \n"); break;
-        case 6 : printf("       |||||          |||||||||||||     ||||||||||||   \n"); break;
-        case 7 : printf("       |||||          ||||||  |||||     |||||||||||    \n"); break;
-        case 8 : printf("       |||||          ||||||  |||||     ||||||||||     \n");break;
-        case 9 : printf("Criado por Álvaro Basílio ©‎ 2019 , Todos os direitos reservados\n"); break;
-        case 10: printf(DEFAULT GREEN"\n");break;
-        case 11: printf(">>>>>>>>>>>>>>>>| DIGITE UMA OPÇÃO |<<<<<<<<<<<<<<<<\n\n");break;
-        case 12: printf(DEF_LETRA);break;
-        case 13: printf(" → 1 - CLIENTES ☺  ☻  ☺\n\n → 2 - PRODUTOS ☎  ☂  ✎ \n\n → 3 - VENDAS   ＄ ＄ ＄\n\n");break;
-        case 14: printf(RED);break;
-        case 15: printf(" → 4 -  SAIR    ✘  ✘  ✘"); break;
-        case 16: printf(DEF_LETRA"\n");break;
-        case 17: printf("\n OPÇÃO -----> "); break;
+        case 0 : printf(" ||||||||||||||||||      |||||||        ||||||||||     \n");break;
+        case 1 : printf(" ||||||||||||||||||     |||||||||       |||||||||||    \n"); break;
+        case 2 : printf("       |||||           |||||  ||||      |||||||||||||  \n"); break;
+        case 3 : printf("       |||||          |||||||||||||     ||||     ||||| \n"); break;
+        case 4 : printf("       |||||          |||||||||||||     ||||     ||||  \n"); break;
+        case 5 : printf("       |||||          |||||||||||||     ||||||||||||   \n"); break;
+        case 6 : printf("       |||||          ||||||  |||||     |||||||||||    \n"); break;
+        case 7 : printf("       |||||          ||||||  |||||     ||||||||||     \n");break;
+        case 8 : printf("Criado por Álvaro Basílio ©‎ 2019 , Todos os direitos reservados\n"); break;
+        case 9: printf(">>>>>>>>>>>>>>>>| DIGITE UMA OPÇÃO |<<<<<<<<<<<<<<<<\n\n");break;
+        case 10: printf(" -> 1 - CLIENTES \n\n -> 2 - PRODUTOS  \n\n -> 3 - VENDAS  \n\n");break;
+        case 11: printf(" -> 4 -  SAIR   "); break;
+        case 12: printf("\n OPÇÃO -----> "); break;
     }
   }
 }
 void MSG_SUB(int numeroModulo, char nome[], char menu[]){
   limparConsole();
-  printf(GREEN);
   printf(">>>>>>>>>>>>>>>>>>>> MODULO %d <<<<<<<<<<<<<<<<<<<\n", numeroModulo);
   printf(">>>>>>>>>>>>>>>>>>>> %s <<<<<<<<<<<<<<<<<<<<<<<<<<\n", menu);
-  printf(DEF_LETRA);
-  printf("\n\n\t → 1 - INSERIR %s", nome);
-  printf("\n\t → 2 - PESQUISAR %s", nome);
-  printf("\n\t → 3 - ALTERAR %s", nome);
-  printf("\n\t → 4 - EXCLUIR %s", nome);
-  printf(RED);
-  printf("\n\t → 5 - RETORNAR AO MENU PRINCIPAL ");
-  printf(DEF_LETRA);
+  printf("\n\n\t -> 1 - INSERIR %s", nome);
+  printf("\n\t -> 2 - PESQUISAR %s", nome);
+  printf("\n\t -> 3 - ALTERAR %s", nome);
+  printf("\n\t -> 4 - EXCLUIR %s", nome);
+  printf("\n\t -> 5 - IMPRIMIR %s", menu);
+  printf("\n\t -> 6 - RETORNAR AO MENU PRINCIPAL ");
 }
 
 void SubMenuModulo1(ModuloClientes* Cliente, TCliente clientes){
@@ -60,25 +52,22 @@ void SubMenuModulo1(ModuloClientes* Cliente, TCliente clientes){
                   break;
           case 2: 
                 limparConsole();
-                printf(GREEN);
                 printf("Digite o CPF/CNPJ do clinete: ");
-                printf(DEF_LETRA);
                 limpezaDoBuffer();
                 fgets(clientes.ID, 49, stdin);
                 formatador(clientes.ID);
                 limparConsole();
                 resposta = pesquisarCliente(*Cliente, clientes);
                 if(resposta != -1){
-                    printf(GREEN);
                     printf("\tCliente encontrado : %s imprimindo informações...", Cliente->listaDeClientes[resposta].nome);
                     imprimeInfoCliente(Cliente->listaDeClientes[resposta]);
                     MSG_SUB(1, "CLIENTE", "CLIENTES");
                 }else{
+                    limpezaDoBuffer();
                     limparConsole();
-                    printf(RED);
                     printf("\tCliente não encontrado! Retornando ao menu...\n");
-                    sleep(2);
-                    printf(DEF_LETRA);
+                    printf("PRESSIONE ENTER PARA CONTINUAR");
+                    getchar();
                     MSG_SUB(1, "CLIENTE", "CLIENTES");
                 }
                 break;
@@ -100,21 +89,23 @@ void SubMenuModulo1(ModuloClientes* Cliente, TCliente clientes){
                   excluirCliente(Cliente, clientes);
                   MSG_SUB(1, "CLIENTE", "CLIENTES");
                   break;
-          case 5: break;
+          case 5: imprimirTodosOsClientes(*Cliente);
+                  MSG_SUB(1, "CLIENTE", "CLIENTES");
+                  break;
+          case 6: break;
           default:
                 limparConsole();
-                printf(RED);
                 printf("-------------------------\n");
                 printf("DIGITE UMA OPÇÃO VÁLIDA!!\n");
                 printf("-------------------------\n");
-                printf(DEF_LETRA);
                 limpezaDoBuffer();
-                sleep(2);
+                printf("PRESSIONE ENTER PARA CONTINUAR");
+                getchar();
                 limparConsole();
                 MSG_SUB(1, "CLIENTE", "CLIENTES");
                 break;
       }
-    }while (opcao != 5);
+    }while (opcao != 6);
 }
     
 void SubMenuModulo2(ModuloProdutos* Produto, TProdutos produtos){
@@ -131,24 +122,21 @@ void SubMenuModulo2(ModuloProdutos* Produto, TProdutos produtos){
                   break;
           case 2: 
                 limparConsole();
-                printf(GREEN);
                 printf("Digite o código do produto: ");
-                printf(DEF_LETRA);
                 limpezaDoBuffer();
                 scanf("%d", &produtos.codigoDoProd);
                 limparConsole();
                 resposta = pesquisarProduto(*Produto, produtos);
                 if(resposta != -1){
-                    printf(GREEN);
                     printf("Produto encontrado: %s  imprimindo informações...", Produto->listaDeProdutos[resposta].nomeDoProd);
                     imprimeInfoProduto(Produto->listaDeProdutos[resposta]);
                     MSG_SUB(2, "PRODUTO", "PRODUTOS");
                 }else{
+                    limpezaDoBuffer();
                     limparConsole();
-                    printf(RED);
                     printf("\tProduto não encontrado! Retornando ao menu...\n");
-                    sleep(2);
-                    printf(DEF_LETRA);
+                    printf("PRESSIONE ENTER PARA CONTINUAR");
+                    getchar();
                     MSG_SUB(2, "PRODUTO", "PRODUTOS");
                 }
                 break;
@@ -168,21 +156,23 @@ void SubMenuModulo2(ModuloProdutos* Produto, TProdutos produtos){
                   excluirProduto(Produto, produtos);
                   MSG_SUB(2, "PRODUTO", "PRODUTOS");
                   break;
-          case 5: break;
+          case 5: imprimirTodosOsProdutos(*Produto); 
+                  MSG_SUB(2, "PRODUTO", "PRODUTOS");
+                  break;
+          case 6: break;
           default:
                 limparConsole();
-                printf(RED);
                 printf("-------------------------\n");
                 printf("DIGITE UMA OPÇÃO VÁLIDA!!\n");
                 printf("-------------------------\n");
-                printf(DEF_LETRA);
                 limpezaDoBuffer();
-                sleep(2);
+                printf("PRESSIONE ENTER PARA CONTINUAR");
+                getchar();
                 limparConsole();
                 MSG_SUB(2, "PRODUTO", "PRODUTOS");
                 break;
       }
-    }while (opcao != 5);
+    }while (opcao != 6);
 }
 
 void SubMenuModulo3(ModuloVendas* Vendas, TVendas vendas, ModuloProdutos *Produtos, ModuloClientes *Cliente){
@@ -194,109 +184,104 @@ void SubMenuModulo3(ModuloVendas* Vendas, TVendas vendas, ModuloProdutos *Produt
       printf("\nDIGITE UMA OPÇÃO ------> ");
       scanf("%d", &opcao);
       switch (opcao){
-          case 1: lerVendas(&vendas, Cliente, Produtos);
-                  imprimeVendas(vendas);
-                  inserirVendas(Vendas, vendas);
-                  MSG_SUB(3, "VENDA", "VENDAS");
+          case 1: resposta = lerVendas(&vendas, Cliente, Produtos);
+                  if(resposta != -1){
+                    imprimeVendas(vendas);
+                    inserirVendas(Vendas, vendas);
+                    MSG_SUB(3, "VENDA", "VENDAS");
+                  }else{
+                      printf("\nIMPOSSÍVEL CONCLUIR VENDA");
+                      printf("\nPRESSIONER ENTER PARA CONTINUAR");
+                      getchar();
+                      limparConsole();
+                      MSG_SUB(3, "VENDA", "VENDAS");
+                  }
                   break;
           case 2: 
                 limparConsole();
                 limpezaDoBuffer();
-                printf(GREEN);
                 printf("Digite o CPF/CNPJ do comprador: ");
-                printf(DEF_LETRA);
                 fgets(cliente.ID, TAM, stdin);
                 formatador(cliente.ID);
-                printf(GREEN);
                 printf("Digite o código do produto: ");
-                printf(DEF_LETRA);
                 scanf("%d", &produtos.codigoDoProd);
                 resposta = pesquisarVendas(*Vendas, *Produtos, *Cliente, cliente, produtos);
                 if(resposta != -1){
-                    printf(GREEN);
                     printf("\tVenda encontrada: %d  imprimindo informações...", Vendas->vendasRealizadas[resposta].codigo);
                     imprimeVendas(Vendas->vendasRealizadas[resposta]);
                     MSG_SUB(3, "VENDA", "VENDAS");
                 }else{
+                    limpezaDoBuffer();
                     limparConsole();
-                    printf(RED);
                     printf("\tVenda não encontrada! Retornando ao menu...\n");
-                    sleep(2);
-                    printf(DEF_LETRA);
+                    printf("PRESSIONE ENTER PARA CONTINUAR");
+                    getchar();
                     MSG_SUB(3, "VENDA", "VENDAS");
                 }
                 break;
           case 3: 
                 limparConsole();
                 limpezaDoBuffer();
-                printf(GREEN);
                 printf("Digite o CPF/CNPJ do comprador: ");
-                printf(DEF_LETRA);
                 fgets(cliente.ID, TAM, stdin);
                 formatador(cliente.ID);
-                printf(GREEN);
                 printf("Digite o código do produto: ");
-                printf(DEF_LETRA);
                 scanf("%d", &produtos.codigoDoProd);
                 resposta = pesquisarVendas(*Vendas, *Produtos, *Cliente, cliente, produtos);
                 if(resposta != -1){
-                    printf(GREEN);
                     printf("\nVenda encontrada: %d  pressione ENTER para alterar a mesma...\n", Vendas->vendasRealizadas[resposta].codigo);
                     imprimeVendas(Vendas->vendasRealizadas[resposta]);
                     alterarVenda(Vendas, Produtos, Cliente, cliente, produtos);
                     MSG_SUB(3, "VENDA", "VENDAS");
                 }else{
+                    limpezaDoBuffer();
                     limparConsole();
-                    printf(RED);
                     printf("\tVenda não encontrada! Retornando ao menu...\n");
-                    sleep(2);
-                    printf(DEF_LETRA);
+                    printf("PRESSIONE ENTER PARA CONTINUAR");
+                    getchar();
                     MSG_SUB(3, "VENDA", "VENDAS");
                 }
                 break;
           case 4: 
                 limparConsole();
                 limpezaDoBuffer();
-                printf(GREEN);
                 printf("Digite o CPF/CNPJ do comprador: ");
-                printf(DEF_LETRA);
                 fgets(cliente.ID, TAM, stdin);
                 formatador(cliente.ID);
-                printf(GREEN);
                 printf("Digite o código do produto: ");
-                printf(DEF_LETRA);
                 scanf("%d", &produtos.codigoDoProd);
                 resposta = pesquisarVendas(*Vendas, *Produtos, *Cliente, cliente, produtos);
                 if(resposta != -1){
-                    printf(GREEN);
                     printf("\nVenda encontrada: %d  pressione ENTER para excluir a mesma...\n", Vendas->vendasRealizadas[resposta].codigo);
                     imprimeVendas(Vendas->vendasRealizadas[resposta]);
                     excluirVendas(Vendas, Cliente, Produtos, cliente, produtos);
                     MSG_SUB(3, "VENDA", "VENDAS");
                 }else{
                     limparConsole();
-                    printf(RED);
+                    limpezaDoBuffer();
                     printf("\tVenda não encontrada! Retornando ao menu...\n");
-                    sleep(2);
-                    printf(DEF_LETRA);
+                    printf("PRESSIONE ENTER PARA CONTINUAR");
+                    getchar();
                     MSG_SUB(3, "VENDA", "VENDAS");
                 }
                 break;
-          case 5: break;
+          case 5: imprimirTodasAsVendas(*Vendas);
+                  MSG_SUB(3, "VENDA", "VENDAS");
+                  break;
+          case 6: break;
           default:
                 limparConsole();
-                printf(RED);
                 printf("-------------------------\n");
                 printf("DIGITE UMA OPÇÃO VÁLIDA!!\n");
                 printf("-------------------------\n");
-                printf(DEF_LETRA);
                 limpezaDoBuffer();
-                sleep(2);
+                printf("PRESSIONE ENTER PARA CONTINUAR");
+                getchar();
                 limparConsole();
                 MSG_SUB(3, "VENDA", "VENDAS");
                 break;
       }
-    }while (opcao != 5);
+    }while (opcao != 6);
 }  
 
 void Menu(ModuloClientes* Cliente, TCliente Clientes, ModuloProdutos* Produtos,
@@ -308,35 +293,30 @@ TProdutos Produto, ModuloVendas* Vendas, TVendas Venda){
         switch (opcao){
             case 1:
                 MSG_SUB(opcao, "CLIENTE", "CLIENTES");
-                printf(DEF_LETRA);
                 SubMenuModulo1(Cliente, Clientes);
                 break;
             case 2:
                 MSG_SUB(opcao, "PRODUTO", "PRODUTOS");
-                printf(DEF_LETRA);
                 SubMenuModulo2(Produtos, Produto);
                 break;
             case 3:
                 MSG_SUB(opcao, "VENDA", "VENDAS");
-                printf(DEF_LETRA);
                 SubMenuModulo3(Vendas, Venda, Produtos, Cliente);
                 break;
             case 4:
                 printf("\n\n");
                 printf("SAINDO DO PROGRAMA...\n");
-                sleep(1);
+                printf("Obrigado por utilizar!!!!!\n");
                 printf("...\n");
-                sleep(2);
                 break;
             default:
                 limparConsole();
-                printf(RED);
                 printf("-------------------------\n");
                 printf("DIGITE UMA OPÇÃO VÁLIDA!!\n");
                 printf("-------------------------\n");
-                printf(DEF_LETRA);
                 limpezaDoBuffer();
-                sleep(3);
+                printf("\nPRESSIONE ENTER PARA CONTINUAR");
+                getchar();
                 limparConsole();
                 break;
         }

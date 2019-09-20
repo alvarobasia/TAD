@@ -7,7 +7,6 @@
 #include "menu.h"
 
 void imprimeInfoProduto(TProdutos modulo){
-    printf(AMA);
     puts("\n------INFORMAÇÕES DO PRODUTO---------");
     printf("Codigo do produto: ");
     printf("%d\n", modulo.codigoDoProd);
@@ -25,7 +24,6 @@ void imprimeInfoProduto(TProdutos modulo){
     printf("Quantidade de produtos no estoque: ");
     printf("%d\n", modulo.quantidadeProd);
     printf("--------------------------------------------------\n");
-    printf(DEF_LETRA);
     printf("PRESSIONE ENTER PARA CONTINUAR!!!!");
     limpezaDoBuffer();
     getchar();
@@ -33,47 +31,29 @@ void imprimeInfoProduto(TProdutos modulo){
 
 void lerProduto(TProdutos *ModuloProdutos){
     limparConsole();
-    printf(GREEN);
     printf("-------------------------------------------\n");
     printf("--------***REGISTRAR PRODUTO***-------------\n");
     printf("Digite o codigo do produto: ");
-    printf(DEF_LETRA);
     scanf("%d", &ModuloProdutos->codigoDoProd);
     limpezaDoBuffer();
-    printf(GREEN);
     printf("Digite o nome do produto: ");
-    printf(DEF_LETRA);
     fgets(ModuloProdutos->nomeDoProd, 49, stdin);
     limpezaDoBuffer();
-    printf(GREEN);
     printf("Digite a descrição do produto: ");
-    printf(DEF_LETRA);
     fgets(ModuloProdutos->descricaoDoProd, 49, stdin);
-    printf(GREEN);
     printf("Digite a data de fabricação do produto: \n");
     printf("DIA: ");
-    printf(DEF_LETRA);
     scanf("%d", &ModuloProdutos->dataFabri.dia);
-    printf(GREEN);
     printf("MêS: ");
-    printf(DEF_LETRA);
     scanf("%d", &ModuloProdutos->dataFabri.mes);
-    printf(GREEN);
     printf("ANO: ");
-    printf(DEF_LETRA);
     scanf("%d", &ModuloProdutos->dataFabri.ano);
-    printf(GREEN);
     printf("Digite o lote do produto: ");
-    printf(DEF_LETRA);
     limpezaDoBuffer();
     fgets(ModuloProdutos->loteDoProd, 49, stdin);
-    printf(GREEN);
     printf("Digite o preço do produto: ");
-    printf(DEF_LETRA);
     scanf("%f", &ModuloProdutos->precoUnit);
-    printf(GREEN);
     printf("Digite a quantidade de produtos que o estoque possui: ");
-    printf(DEF_LETRA);
     scanf("%d", &ModuloProdutos->quantidadeProd);
     limparConsole();
     limpezaDoBuffer();
@@ -101,6 +81,7 @@ int pesquisarProduto(ModuloProdutos ModuloProdutos, TProdutos  Produtos){
     return -1;
 }
 void imprimirTodosOsProdutos(ModuloProdutos produtos){
+    limparConsole();
     printf("Produtos: \n");
     for(int i = 0; i < produtos.indice; i++){
         imprimeInfoProduto(produtos.listaDeProdutos[i]);
@@ -110,35 +91,30 @@ void imprimirTodosOsProdutos(ModuloProdutos produtos){
 void alterarProduto(ModuloProdutos* ModuloProdutos, TProdutos Produtos){
   int resposta = pesquisarProduto(*ModuloProdutos, Produtos);
   if(resposta == -1){
-    printf(RED);
     limpezaDoBuffer();
     printf("\t Produto não encontrado. Retornando ao menu... \n");
-    sleep(2);
-    printf(DEF_LETRA);
+    printf("PRESSIONE ENTER PARA CONTINUAR\n");
+    getchar();
     limparConsole();
     return;
   }
-  printf(GREEN);
   limpezaDoBuffer();
   printf("Produto encontrado: %s, pressione ENTER para alterar ...\n", ModuloProdutos->listaDeProdutos[resposta].nomeDoProd);
   imprimeInfoProduto(ModuloProdutos->listaDeProdutos[resposta]);
   lerProduto(&ModuloProdutos->listaDeProdutos[resposta]);
   imprimeInfoProduto(ModuloProdutos->listaDeProdutos[resposta]);
-  printf(DEF_LETRA);
 }
 
 void excluirProduto(ModuloProdutos* ModuloProdutos, TProdutos Produtos){
   int resposta = pesquisarProduto(*ModuloProdutos, Produtos);
   if(resposta == -1){
-    printf(RED);
     limpezaDoBuffer();
     printf("\t Produto não encontrado. Retornando ao menu... \n");
-    sleep(2);
-    printf(DEF_LETRA);
+    printf("PRESSIONE ENTER PARA CONTINUAR\n");
+    getchar();
     limparConsole();
     return;
   }
-  printf(GREEN);
   limpezaDoBuffer();
   printf("Produto %s encontrado, pressione ENTER excluir ...\n", ModuloProdutos->listaDeProdutos[resposta].nomeDoProd);
   imprimeInfoProduto(ModuloProdutos->listaDeProdutos[resposta]);
@@ -146,7 +122,8 @@ void excluirProduto(ModuloProdutos* ModuloProdutos, TProdutos Produtos){
       ModuloProdutos->listaDeProdutos[j] = ModuloProdutos->listaDeProdutos[j + 1];
   }
   ModuloProdutos->indice--;
-  printf(GREEN);
   printf("Produto excluído com sucesso! \n");
-  sleep(3);
+  limpezaDoBuffer();
+  printf("PRESSIONE ENTER PARA CONTINUAR\n");
+  getchar();
 }
