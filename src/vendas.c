@@ -113,18 +113,11 @@ void inserirVendas(ModuloVendas *ModuloVendas, TVendas Vendas){
 
 int pesquisarVendas(ModuloVendas ModuloVendas, ModuloProdutos ModuloProdutos, ModuloClientes ModuloClientes, 
 TCliente Cliente, TProdutos Produtos){
-    //printf("Digite o CPF/CNPJ do comprador: ");
-    //TCliente Cliente;
-    //fgets(Cliente.ID, TAM, stdin);
-    //formatador(Cliente.ID);
     int respostaCliente = pesquisarCliente(ModuloClientes, Cliente);
     if( respostaCliente == -1){
         printf("Cliente não encontrado\n");
         return -1;
     }
-    //TProdutos Produtos;
-    //printf("Digite o código do produto: ");
-    //scanf("%d", &Produtos.codigoDoProd);
     int respostaProdutos = pesquisarProduto(ModuloProdutos, Produtos);
     if( respostaProdutos == -1){
         printf("Produto  não encontrado\n");
