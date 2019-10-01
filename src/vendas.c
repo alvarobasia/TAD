@@ -9,6 +9,8 @@ void imprimeVendas(TVendas Vendas){
     limpezaDoBuffer();
     printf("\nCodigo do produto comprado: ");
     printf("%d\n", Vendas.codigo);
+    printf("\nCLiente: ");
+    printf("%s\n", Vendas.ID);
     printf("Data da realização da venda: ");
     printf("%d / %d / %d\n", Vendas.dataDaVenda.dia,
     Vendas.dataDaVenda.mes, Vendas.dataDaVenda.ano);
@@ -20,6 +22,10 @@ void imprimeVendas(TVendas Vendas){
         printf("%d/ %d/ %d\n", Vendas.prazoParaPagamento.dia,
         Vendas.prazoParaPagamento.mes, Vendas.prazoParaPagamento.ano);
     }
+    printf("Quantidade da venda: ");
+    printf("%d", Vendas.quantidadeDeVendas);
+    printf("\n Preço da venda: ");
+    printf("%f", Vendas.precoDaVenda);
     printf("------------------------------------------\n");
     printf("PRESSIONE ENTER PARA CONTINUAR!!!!");
     getchar();
@@ -95,7 +101,10 @@ int lerVendas(TVendas *Vendas,ModuloClientes* ModuloClientes, ModuloProdutos *Mo
        printf("----------Á VISTA-------------\n"); 
        Vendas->tipoDePagamento = 1;
     }
+    printf("Digite a quantidade de produtos que deseja comprar: \n");
+    scanf("%d", &Vendas->quantidadeDeVendas);
     ModuloProdutos->listaDeProdutos[feedbackProduto].quantidadeProd--;
+    Vendas->precoDaVenda=ModuloProdutos->listaDeProdutos[feedbackProduto].precoUnit * Vendas->quantidadeDeVendas;
     return 0;
     limparConsole();
 }

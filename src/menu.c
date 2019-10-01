@@ -5,7 +5,10 @@
 #include <unistd.h> 
 #include "menu.h"
 #include "vendas.h"
-
+#include "clientes.h"
+#include "produtos.h"
+#include "notaFiscal.h"
+#include "prova.h"
 void MSG_MENU_PRINCIPAL(){
       limparConsole();
       for(int i = 0; i < 13 ; i++){
@@ -20,11 +23,21 @@ void MSG_MENU_PRINCIPAL(){
         case 7 : printf("       |||||          ||||||  |||||     ||||||||||     \n");break;
         case 8 : printf("Criado por Álvaro Basílio ©‎ 2019 , Todos os direitos reservados\n"); break;
         case 9: printf(">>>>>>>>>>>>>>>>| DIGITE UMA OPÇÃO |<<<<<<<<<<<<<<<<\n\n");break;
-        case 10: printf(" -> 1 - CLIENTES \n\n -> 2 - PRODUTOS  \n\n -> 3 - VENDAS  \n\n");break;
-        case 11: printf(" -> 4 -  SAIR   "); break;
+        case 10: printf(" -> 1 - CLIENTES \n\n -> 2 - PRODUTOS  \n\n -> 3 - VENDAS  \n\n -> 4 - PROVA \n\n");break;
+        case 11: printf(" -> 5 -  SAIR   "); break;
         case 12: printf("\n OPÇÃO -----> "); break;
     }
   }
+}
+void MENU_PROVA(){
+    limparConsole();
+   printf(">>>>>>>>>>>>>>>>>>>> PROVA <<<<<<<<<<<<<<<<<<<\n");
+   printf("\n\n\t 1-> Questão 1 - produto mais Vendido");
+   printf("\n\t 2-> Questão 2 - Vendas a vista");
+   printf("\n\t 3-> Questão 3 - Mesma venda cliente");
+   printf("\n\t 4-> Questão 4a) - Nota fiscal");
+   printf("\n\t -> Questao 4b) Esta questão esta no código");
+   printf("\n\t -> 5 - RETORNAR AO MENU PRINCIPAL "); 
 }
 void MSG_SUB(int numeroModulo, char nome[], char menu[]){
   limparConsole();
@@ -37,7 +50,59 @@ void MSG_SUB(int numeroModulo, char nome[], char menu[]){
   printf("\n\t -> 5 - IMPRIMIR %s", menu);
   printf("\n\t -> 6 - RETORNAR AO MENU PRINCIPAL ");
 }
-
+ void SubMenuProva(ModuloVendas Vendas, ModuloProdutos Produtos){
+     limpezaDoBuffer();
+     int opcao;
+     TCliente c1, c2;
+     TData data;
+     do{
+         printf("\nDIGITE UMA OPÇÃO ------> ");
+         scanf("%d", &opcao);
+         switch (opcao)
+         {
+            case 1: produtoMaisVendido(Vendas, Produtos);
+                    MENU_PROVA();break;
+            case 2: vendasAVista(Vendas);
+            MENU_PROVA();break;
+            case 3: 
+                    limparConsole();
+                    printf("Digite o cpf/cnpj do primeiro cliente ");
+                    limpezaDoBuffer();
+                    fgets(c1.ID, TAM, stdin);
+                    formatador(c1.ID);
+                    printf("Digite o cpf/cnpj do segundo cliente ");
+                    limpezaDoBuffer();
+                    fgets(c2.ID, TAM, stdin);
+                    formatador(c2.ID);
+                    clientesIguais(Vendas, c1, c2, Produtos);
+                    MENU_PROVA();break;
+            case 4: 
+                    printf("Digite o cpf/cnpj do cliente ");
+                    limpezaDoBuffer();
+                    fgets(c1.ID, TAM, stdin);
+                    formatador(c1.ID);
+                    printf("Digite o dia ");
+                    limpezaDoBuffer();
+                    scanf("%d", &data.dia);
+                    printf("Digite o mes ");
+                    limpezaDoBuffer();
+                    scanf("%d", &data.mes);
+                    printf("Digite o ano ");
+                    limpezaDoBuffer();
+                    scanf("%d", &data.ano);
+                    NotaFiscal(Vendas, c1, data); 
+                    MENU_PROVA();
+                    break;
+            case 5: break;
+            default : printf("Digite uma opção válida");
+                    limparConsole();
+                    limpezaDoBuffer();
+                    getchar();
+                    MENU_PROVA();
+         }
+     } while (opcao != 5);
+     
+ }
 void SubMenuModulo1(ModuloClientes* Cliente, TCliente clientes){
     int opcao;
     int resposta;
@@ -304,6 +369,10 @@ TProdutos Produto, ModuloVendas* Vendas, TVendas Venda){
                 SubMenuModulo3(Vendas, Venda, Produtos, Cliente);
                 break;
             case 4:
+                MENU_PROVA();
+                SubMenuProva(*Vendas, *Produtos);
+                break;
+            case 5:
                 printf("\n\n");
                 printf("SAINDO DO PROGRAMA...\n");
                 printf("Obrigado por utilizar!!!!!\n");
@@ -320,6 +389,6 @@ TProdutos Produto, ModuloVendas* Vendas, TVendas Venda){
                 limparConsole();
                 break;
         }
-    } while (opcao != 4);
+    } while (opcao != 5);
   
 }

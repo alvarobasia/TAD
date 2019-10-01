@@ -14,6 +14,7 @@ typedef struct Vendas
     int codigo;
     char ID[TAM];
     int quantidadeDeVendas;
+    float precoDaVenda;
     TData dataDaVenda;
     int tipoDePagamento; //1 - a vista ou 2 - a prazo
     float totalDaVenda;

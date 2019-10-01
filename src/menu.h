@@ -5,7 +5,13 @@
 #ifndef MENU_H_INCLUDED
 #define MENU_H_INCLUDED
 #include "estoque.h"	
+#include "clientes.h"
+#include "produtos.h"
+#include "vendas.h"
+#include "notaFiscal.h"
 #define TAM 50
+
+void MENU_PROVA();
 
 void MSG_MENU_PRINCIPAL();
 
